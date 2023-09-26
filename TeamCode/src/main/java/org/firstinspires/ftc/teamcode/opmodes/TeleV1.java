@@ -81,7 +81,15 @@ public class TeleV1 extends LinearOpMode {
             telemetry.addData("Left Bumper", gamepad2.left_bumper);
             telemetry.addData("Left Servo Position", leftServo.getPosition());
             telemetry.addData("Right Servo Position", rightServo.getPosition());
-
+            telemetry.addLine()
+            .addData("Red", "%.3f", colors.red)
+            .addData("Green", "%.3f", colors.green)
+            .addData("Blue", "%.3f", colors.blue);
+            telemetry.addLine()
+            .addData("Hue", "%.3f", hsvValues[0])
+            .addData("Saturation", "%.3f", hsvValues[1])
+            .addData("Value", "%.3f", hsvValues[2]);
+            telemetry.addData("Alpha", "%.3f", colors.alpha);
             telemetry.addData("Code uploaded", "yes");
 
             while (!isStopRequested()) {
