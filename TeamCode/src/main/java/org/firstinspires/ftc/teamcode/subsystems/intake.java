@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
-public class Intake {
-    private DcMotor Intake;
+public class intake {
+    private DcMotor Sweep;
 
     public void init(HardwareMap hardwareMap) {
-        Intake = hardwareMap.get(DcMotor.class, "Intake");
+        Sweep = hardwareMap.get(DcMotor.class, "Sweep");
     }
+
 }
