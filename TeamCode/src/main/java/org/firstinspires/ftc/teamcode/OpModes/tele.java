@@ -40,8 +40,10 @@ public class tele extends LinearOpMode{
         Shooter = new shooter();
         Hanger = new hang();
         Servo Claw = null;
+        Servo Shooter = null;
 
         Claw = hardwareMap.get(Servo.class, "Claw");
+        Shooter = hardwareMap.get(Servo.class, "Shooter");
 
         waitForStart();
         while (!isStopRequested()) {

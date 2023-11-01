@@ -12,11 +12,11 @@ public class outake {
     double ClampClose = -1; //change as necessary
     double ClampOpen = -0.5;
 
-    public void openClamp(){
+    public void openClamp() {
         Clamp.setPosition(ClampClose);
     }
 
-    public void closeClamp(){
+    public void closeClamp() {
         Clamp.setPosition(ClampOpen);
     }
 
