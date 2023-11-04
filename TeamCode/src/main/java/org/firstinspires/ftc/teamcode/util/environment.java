@@ -36,19 +36,19 @@ public class environment {
     }
 
     //return 0 if red, return 1 if blue, return 2 if unknown
-    public int getTapeColor() {
+    public String getTapeColor() {
         getColorValues();
 
         if (red > green && red > blue) {
-            return 0;
+            return "Red";
         }
 
         if (blue > red && blue > green) {
-            return 1;
+            return "Blue";
         }
 
         else {
-            return 2;
+            return "Unknown";
         }
     }
 }
