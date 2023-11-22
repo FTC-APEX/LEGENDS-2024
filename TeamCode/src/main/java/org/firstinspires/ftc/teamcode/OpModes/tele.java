@@ -4,27 +4,18 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-
-import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.subsystems.slides;
-import org.firstinspires.ftc.teamcode.subsystems.hang;
-import org.firstinspires.ftc.teamcode.subsystems.shooter;
-import org.firstinspires.ftc.teamcode.subsystems.intake;
-import org.firstinspires.ftc.teamcode.subsystems.outake;
-import org.firstinspires.ftc.teamcode.subsystems.mechanum;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name = "tele")
 public class tele extends LinearOpMode {
     //Input all subsystems & drivetrain
-    SampleMecanumDrive drivetrain;
-    slides Slides;
-    outake Clamp;
-    intake Sweep;
-    shooter Shooter;
-    hang Hanger;
+//    SampleMecanumDrive drivetrain;
+//    slides Slides;
+//    outake Clamp;
+//    intake Sweep;
+//    shooter Shooter;
+//    hang Hanger;
     private DcMotor frontLeft = null;
     private DcMotor frontRight = null;
     private DcMotor backLeft = null;
@@ -38,21 +29,23 @@ public class tele extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
-        //Initialization of all Subsystems
-        drivetrain = new SampleMecanumDrive(hardwareMap);
-        //mainSlides = new Slides();
-        Clamp = new outake();
-        Sweep = new intake();
-        Shooter = new shooter();
-        Hanger = new hang();
-        Servo Claw = null;
-        Servo Shooter = null;
+//        //Initialization of all Subsystems
+//        drivetrain = new SampleMecanumDrive(hardwareMap);
+//        //mainSlides = new Slides();
+//        Clamp = new outake();
+//        Sweep = new intake();
+//        Shooter = new shooter();
+//        Hanger = new hang();
+//        Servo Claw = null;
+//        Servo Shooter = null;\
 
-
-        Claw = hardwareMap.get(Servo.class, "Claw");
-        Shooter = hardwareMap.get(Servo.class, "Shooter");
+//
+//        Claw = hardwareMap.get(Servo.class, "Claw");
+//        Shooter = hardwareMap.get(Servo.class, "Shooter");
 
         waitForStart();
         while (!isStopRequested()) {
@@ -63,8 +56,6 @@ public class tele extends LinearOpMode {
                 telemetry.addData("Back Left: ", backLeft.getCurrentPosition());
                 telemetry.addData("Back Right: ", backRight.getCurrentPosition());
 
-                while (!isStopRequested()) {
-                    // Translation
                     if (Math.abs(gamepad1.left_stick_y) > 0.2 || Math.abs(gamepad1.left_stick_x) > 0.2 || Math.abs(gamepad1.right_stick_x) > 0.2) {
                         frontLeft.setPower(((gamepad1.left_stick_y - gamepad1.right_stick_x * 1.22) - gamepad1.left_stick_x) / 1.2);
                         frontRight.setPower(((gamepad1.left_stick_y * -1 - gamepad1.right_stick_x * 1.22) - gamepad1.left_stick_x) / 1.2);
@@ -104,8 +95,8 @@ public class tele extends LinearOpMode {
 
 
                     telemetry.update();
-                }
-                drivetrain.update();
+
+//                drivetrain.update();
             }
         }
     }

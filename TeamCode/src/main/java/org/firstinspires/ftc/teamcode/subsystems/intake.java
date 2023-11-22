@@ -10,7 +10,7 @@ public class intake {
     boolean isBusy = false;
 
     public void init(HardwareMap hardwareMap) {
-        Intake = hardwareMap.get(DcMotorEx.class, "Intake");
+        Intake = hardwareMap.get(DcMotorEx.class, "intake");
         Intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         Intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }

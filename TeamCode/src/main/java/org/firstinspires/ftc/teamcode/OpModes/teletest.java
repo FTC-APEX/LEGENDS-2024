@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.slides;
 import org.firstinspires.ftc.teamcode.util.environment;
 import org.firstinspires.ftc.teamcode.util.internal;
+import org.firstinspires.ftc.teamcode.subsystems.intake;
 
 import java.util.Objects;
 
@@ -25,6 +26,8 @@ public class teletest extends LinearOpMode {
 
     String alliance;
 
+    intake intake = new intake();
+
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -33,6 +36,7 @@ public class teletest extends LinearOpMode {
         //slides.init(hardwareMap);
         environment.init(hardwareMap);
         internal.init(hardwareMap);
+        intake.init(hardwareMap);
 
         waitForStart();
         while (!isStopRequested()) {
@@ -40,6 +44,7 @@ public class teletest extends LinearOpMode {
                 telemetry.addData("Tape ARGB: ", environment.getTapeColorDataRaw());
                 telemetry.addData("Tape Color: ", environment.getTapeColor());
                 telemetry.addData("Heading: ", internal.robotHeading());
+                telemetry.addData("Intake Busy Status: " , intake.getStatus());
                 telemetry.addData("Current Alliance: ", alliance);
 
 
@@ -54,6 +59,14 @@ public class teletest extends LinearOpMode {
 
                 if (Objects.equals(environment.getTapeColor(), alliance)) {
                     telemetry.addLine("Robot Stopped");
+                }
+
+                if (gamepad1.cross) {
+                    intake.activate();
+                }
+
+                if (gamepad1.circle) {
+                    intake.deactivate();
                 }
 
                 telemetry.update();
