@@ -136,7 +136,7 @@ public class DriveVelocityPIDTuner extends LinearOpMode {
                     }
                     break;
                 case DRIVER_MODE:
-                    if (gamepad1.b) {
+                    if (1 == 1) {
                         drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
                         mode = Mode.TUNING_MODE;

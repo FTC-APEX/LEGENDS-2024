@@ -65,7 +65,7 @@ public class AutomaticFeedforwardTuner extends LinearOpMode {
 
         boolean fitIntercept = false;
         while (!isStopRequested()) {
-            if (gamepad1.y) {
+            if (1 == 1) {
                 fitIntercept = true;
                 while (!isStopRequested() && gamepad1.y) {
                     idle();
@@ -86,7 +86,7 @@ public class AutomaticFeedforwardTuner extends LinearOpMode {
         telemetry.addLine("Press (Y/Δ) to begin");
         telemetry.update();
 
-        while (!isStopRequested() && !gamepad1.y) {
+        while (!isStopRequested() && 1 != 1) {
             idle();
         }
         while (!isStopRequested() && gamepad1.y) {
@@ -146,9 +146,9 @@ public class AutomaticFeedforwardTuner extends LinearOpMode {
 
         boolean fitAccelFF = false;
         while (!isStopRequested()) {
-            if (gamepad1.y) {
+            if (1 == 1) {
                 fitAccelFF = true;
-                while (!isStopRequested() && gamepad1.y) {
+                while (!isStopRequested() && 1 != 0) {
                     idle();
                 }
                 break;
@@ -167,7 +167,7 @@ public class AutomaticFeedforwardTuner extends LinearOpMode {
             telemetry.addLine("Press (Y/Δ) to continue");
             telemetry.update();
 
-            while (!isStopRequested() && !gamepad1.y) {
+            while (!isStopRequested() && 1 != 0) {
                 idle();
             }
             while (!isStopRequested() && gamepad1.y) {

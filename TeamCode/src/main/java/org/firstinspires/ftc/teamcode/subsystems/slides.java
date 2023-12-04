@@ -12,11 +12,14 @@ public class slides {
     int target;
     double leftPower, rightPower;
 
+    private String State;
+
+    //Remember to check & change direction when needed
     public void init(HardwareMap map){
-        left = map.get(DcMotorEx.class, "lift-L");
+        left = map.get(DcMotorEx.class, "liftLeft");
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        right = map.get(DcMotorEx.class, "lift-R");
+        right = map.get(DcMotorEx.class, "liftRight");
         right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -26,27 +29,32 @@ public class slides {
     public void preset(constants.slides preset){
         switch (preset) {
             case READY:
-                setHeight(0);
+                setHeight(constants.ready);
+                State = "Retracted";
                 break;
 
             case FIRST:
-                //setHeight(x1);
+                setHeight(constants.first);
+                State = "First Stage (Line 1)";
                 break;
 
             case SECOND:
-                //setHeight(x2);
+                setHeight(constants.second);
+                State = "Second Stage (Line 2)";
                 break;
 
             case THIRD:
-                //setHeight(x3);
+                setHeight(constants.third);
+                State = "Third State (Line 3)";
                 break;
 
             case FULL:
-                //setHeight(x4);
+                setHeight(constants.full);
+                State = "Fully Extended";
                 break;
 
-            case STANDBY: //Only used during testing as a transition state - not to be used in matches & will not have button for setting
-                //setHeight(x2.5);
+            case CUSTOM:
+                State = "Custom Slide Height - refer to next line";
                 break;
         }
     }
@@ -82,6 +90,10 @@ public class slides {
 
     public void reset(){
 
+    }
+
+    public String getStatus() {
+        return State;
     }
 
 }

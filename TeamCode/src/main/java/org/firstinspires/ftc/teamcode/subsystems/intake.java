@@ -3,29 +3,80 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.util.constants;
 
 public class intake {
-    private DcMotorEx Intake;
+    private DcMotorEx intake;
+    private Servo pivot;
 
-    boolean isBusy = false;
+    private String State;
+    private String Position;
 
     public void init(HardwareMap hardwareMap) {
-        Intake = hardwareMap.get(DcMotorEx.class, "intake");
-        Intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        Intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intake = hardwareMap.get(DcMotorEx.class, "intake");
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void activate() {
-        Intake.setPower(1);
-        isBusy = true;
+    public void state(constants.intakeState state) {
+        switch (state) {
+            case SUCK:
+                intake.setDirection(DcMotorEx.Direction.FORWARD);
+                intake.setPower(constants.intakeSpeed);
+                State = "Sucking In";
+                break;
+
+            case SPIT:
+                intake.setDirection(DcMotorEx.Direction.REVERSE);
+                intake.setPower(constants.intakeSpeed);
+                State = "Spitting Out";
+                break;
+
+            case PURPLE:
+                intake.setDirection(DcMotorEx.Direction.REVERSE);
+                intake.setPower(constants.purpleSpeed);
+                State = "Autonomous Purple";
+                break;
+
+            case STOP:
+                intake.setPower(0);
+                State = "Idle";
+                break;
+        }
     }
 
-    public void deactivate() {
-        Intake.setPower(0);
-        isBusy = false;
+    public void height(constants.intakeHeights height) {
+        switch (height) {
+            case FLOOR:
+                pivot.setPosition(constants.floor);
+                Position = "Floor";
+                break;
+
+            case TWO:
+                pivot.setPosition(constants.two);
+                Position = "Two";
+                break;
+
+            case FOUR:
+                pivot.setPosition(constants.four);
+                Position = "Four";
+                break;
+
+            case SIX:
+                pivot.setPosition(constants.six);
+                Position = "Six";
+                break;
+
+            case RETRACTED:
+                pivot.setPosition(constants.retracted);
+                Position = "Retracted";
+                break;
+        }
     }
 
-    public boolean getStatus() {
-        return isBusy;
+    public String getStatus() {
+        return State;
     }
 }
