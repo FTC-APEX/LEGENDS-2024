@@ -20,9 +20,9 @@ public class KAMERAtest extends LinearOpMode {
 
         while (opModeIsActive()) {
             telemetry.addData("Position: ", kamera.getZone());
-            telemetry.addData("Avg L:", kamera.pipeline.avgL);
-            telemetry.addData("Avg C:", kamera.pipeline.avgC);
-            telemetry.addData("Avg R:", kamera.pipeline.avgR);
+            //telemetry.addData("Avg L:", kamera.pipeline.avgL);
+            //telemetry.addData("Avg C:", kamera.pipeline.avgC);
+            //telemetry.addData("Avg R:", kamera.pipeline.avgR);
             telemetry.update();
 
             sleep(50);

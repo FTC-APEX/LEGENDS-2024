@@ -70,37 +70,51 @@ public class OpenCV {
 
         //Variables
         Mat crL, crC, crR;
+        Mat cbL, cbC, cbR;
         Mat YCrCb = new Mat();
         Mat Cb = new Mat();
         Mat Cr = new Mat();
-        public int avgL, avgC, avgR;
+        public int avgLR, avgCR, avgRR, avgLB, avgCB, avgRB;
 
 
         private volatile position Position = position.CENTER;
 
-        void inputToCb(Mat input) {
+        void inputToCr(Mat input) {
             Imgproc.cvtColor(input, YCrCb, Imgproc.COLOR_RGB2YCrCb);
             Core.extractChannel(YCrCb, Cr, 1);
         }
 
+        void inputToCb(Mat input) {
+            Imgproc.cvtColor(input, YCrCb, Imgproc.COLOR_RGB2YCrCb);
+            Core.extractChannel(YCrCb, Cb, 2);
+        }
 
-        @Override
-        public void init(Mat frame) {
-            inputToCb(frame);
+
+        public void init(Mat frame1, Mat frame2) {
+            inputToCr(frame1);
+            inputToCb(frame2);
 
             crL = Cr.submat(new Rect(leftA, leftB));
             crC = Cr.submat(new Rect(centerA, centerB));
             crR = Cr.submat(new Rect(rightA, rightB));
 
+            cbL = Cb.submat(new Rect(leftA, leftB));
+            cbC = Cb.submat(new Rect(centerA, centerB));
+            cbR = Cb.submat(new Rect(rightA, rightB));
+
         }
 
         @Override
         public Mat processFrame(Mat frame) {
-            inputToCb(frame);
+            inputToCr(frame);
 
-            avgL = (int) Core.mean(crL).val[0];
-            avgC = (int) Core.mean(crC).val[0];
-            avgR = (int) Core.mean(crR).val[0];
+            avgLR = (int) Core.mean(crL).val[0];
+            avgCR = (int) Core.mean(crC).val[0];
+            avgRR = (int) Core.mean(crR).val[0];
+
+            avgLB = (int) Core.mean(cbL).val[0];
+            avgCB = (int) Core.mean(cbC).val[0];
+            avgRB = (int) Core.mean(cbR).val[0];
 
 
             Imgproc.rectangle(
@@ -124,10 +138,13 @@ public class OpenCV {
                     GREEN,
                     2);
 
-            int maxLR = Math.max(avgL, avgR);
-            int min = Math.max(maxLR, avgC);
+            int maxLRR = Math.max(avgLR, avgRR);
+            int minR = Math.max(maxLRR, avgCR);
 
-            if (min == avgL) {
+            int maxLRB = Math.max(avgLR, avgRR);
+            int minB = Math.max(maxLRB, avgCR);
+
+            if (minR == avgLR || minB == avgLB) {
                 Position = position.LEFT;
 
                 Imgproc.rectangle(
@@ -138,7 +155,7 @@ public class OpenCV {
                         2);
             }
 
-            else if(min == avgC) {
+            else if(minR == avgCR || minB == avgCB) {
                 Position = position.CENTER;
 
                 Imgproc.rectangle(
@@ -149,7 +166,7 @@ public class OpenCV {
                         2);
             }
 
-            else if(min == avgR) {
+            else if(minR == avgRR || minB == avgRB) {
                 Position = position.RIGHT;
 
                 Imgproc.rectangle(
@@ -161,7 +178,7 @@ public class OpenCV {
             }
 
             else {
-                Position = position.UNKNOWN;
+                Position = position.CENTER;
             }
 
             return frame;

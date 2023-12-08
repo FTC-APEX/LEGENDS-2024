@@ -28,8 +28,8 @@ public class tele extends LinearOpMode {
     private DcMotorEx backRight;
 
     private slides slides;
-    private intake intake;
-    private outtake outtake;
+    private intake intake = new intake();
+    private outtake outtake = new outtake();
     private environment environment;
     StandardTrackingWheelLocalizer localizer;
     private String Alliance;
@@ -40,22 +40,22 @@ public class tele extends LinearOpMode {
     public void runOpMode() {
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        frontLeft = hardwareMap.get(DcMotorEx.class, "leftFront");
-        frontRight = hardwareMap.get(DcMotorEx.class, "rightFront");
-        backLeft = hardwareMap.get(DcMotorEx.class, "leftRear");
-        backRight = hardwareMap.get(DcMotorEx.class, "rightRear");
+        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
+        frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
+        backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
+        backRight = hardwareMap.get(DcMotorEx.class, "backRight");
         //Remember to change this to appropriate when chain drive implemented
-        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        //backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        //backRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        slides.init(hardwareMap);
-        intake.init(hardwareMap);
+        //slides.init(hardwareMap);
+        //intake.init(hardwareMap);
         outtake.init(hardwareMap);
-        environment.init(hardwareMap);
+        //environment.init(hardwareMap);
 
-        localizer = new StandardTrackingWheelLocalizer(hardwareMap);
+        //localizer = new StandardTrackingWheelLocalizer(hardwareMap);
 
-        localizer.setPoseEstimate(new Pose2d(0, 0, Math.toRadians(90)));
+        //localizer.setPoseEstimate(new Pose2d(0, 0, Math.toRadians(90)));
 
         while (opModeInInit()) {
             telemetry.addLine("Robot Initialized");
@@ -66,18 +66,20 @@ public class tele extends LinearOpMode {
         waitForStart();
         while (!isStopRequested()) {
             while (opModeIsActive()) {
-                localizer.update();
-                Pose2d currentPose = localizer.getPoseEstimate();
+                //localizer.update();
+                //Pose2d currentPose = localizer.getPoseEstimate();
                 telemetry.addData("Robot Status: ", Status);
                 telemetry.addData("Current Alliance: ", Alliance);
                 telemetry.addLine(""); // Empty Line Break
-                telemetry.addData("X: ", currentPose.getX());
-                telemetry.addData("Y: ", currentPose.getY());
-                telemetry.addData("Heading: ", currentPose.getHeading());
+                //telemetry.addData("X: ", currentPose.getX());
+                //telemetry.addData("Y: ", currentPose.getY());
+                //telemetry.addData("Heading: ", currentPose.getHeading());
                 telemetry.addLine(""); // Empty Line Break
                 telemetry.addData("Intake: ", intake.getStatus());
                 telemetry.addData("Outtake: ", outtake.getStatus());
                 telemetry.addData("Slides: ", slides.getStatus());
+                telemetry.addLine(""); // Empty Line Break
+
 
                 //Alliance choosing
                 if (gamepad1.options && gamepad1.triangle) {
@@ -98,7 +100,7 @@ public class tele extends LinearOpMode {
                 }
 
                 //Driving - boost not implemented
-                if (Objects.equals(environment.getTapeColor(), Alliance) && currentPose.getY() >= 48 && Safety == true) {
+                if (Safety == true) { //&& currentPose.getY() >= 48 Objects.equals(environment.getTapeColor(), Alliance)  &&
                     if (gamepad1.right_stick_y < - 0.2) {
                         frontLeft.setPower(-0.5);
                         frontRight.setPower(-0.5);
@@ -146,22 +148,22 @@ public class tele extends LinearOpMode {
                 }
 
                 //Intake States
-                if (gamepad1.triangle) {
-                    intake.height(constants.intakeHeights.SIX);
-                }
-
-                if (gamepad1.square) {
-                    intake.height(constants.intakeHeights.TWO);
-                }
-
-                if (gamepad1.circle) {
-                    intake.height(constants.intakeHeights.FOUR);
-                }
-
-                if (gamepad1.cross) {
-                    intake.height(constants.intakeHeights.FLOOR);
-                }
-
+//                if (gamepad1.triangle) {
+//                    intake.height(constants.intakeHeights.SIX);
+//                }
+//
+//                if (gamepad1.square) {
+//                    intake.height(constants.intakeHeights.TWO);
+//                }
+//
+//                if (gamepad1.circle) {
+//                    intake.height(constants.intakeHeights.FOUR);
+//                }
+//
+//                if (gamepad1.cross) {
+//                    intake.height(constants.intakeHeights.FLOOR);
+//                }
+//
                 if (gamepad1.right_bumper) {
                     intake.state(constants.intakeState.STOP);
                 }
@@ -209,19 +211,19 @@ public class tele extends LinearOpMode {
 
                 //outtake states
                 if (gamepad2.cross) {
-                    outtake.state(constants.outtake.READY);
+                    outtake.move(constants.outtake.READY);
                 }
 
                 if (gamepad2.square) {
-                    outtake.state(constants.outtake.MOVING);
+                    outtake.move(constants.outtake.MOVING);
                 }
 
                 if (gamepad2.circle) {
-                    outtake.state(constants.outtake.AIM);
+                    outtake.move(constants.outtake.AIM);
                 }
 
                 if (gamepad2.triangle) {
-                    outtake.state(constants.outtake.SCORE);
+                    outtake.move(constants.outtake.SCORE);
                 }
 
 

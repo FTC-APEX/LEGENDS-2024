@@ -6,15 +6,15 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.util.constants;
 
 public class outtake {
-    private Servo clamp;
-    private Servo hingeA;
-    private Servo hingeB;
+    public Servo clamp;
+    private Servo left;
+    private Servo right;
     private String State;
 
     public void init(HardwareMap hardwareMap) {
-        clamp = hardwareMap.get(Servo.class, "Clamp");
-        hingeA = hardwareMap.get(Servo.class, "HingeA");
-        hingeB = hardwareMap.get(Servo.class, "HingeB");
+        clamp = hardwareMap.get(Servo.class, "outtake");
+        left = hardwareMap.get(Servo.class, "left");
+        right = hardwareMap.get(Servo.class, "right");
     }
     double ClampClose = -1; //change as necessary
     double ClampOpen = -0.5; //change as necessary - may be moved to constants
@@ -27,33 +27,33 @@ public class outtake {
 //        clamp.setPosition(ClampOpen);
 //    }
 
-    public void state(constants.outtake state) {
+    public void move(constants.outtake state) {
         switch (state) {
             case READY:
-                hingeA.setPosition(constants.hingeReady);
-                hingeB.setPosition(constants.hingeReady);
-                clamp.setPosition(constants.clampOpen);
+                left.setPosition(constants.hingeReadyA);
+                right.setPosition(constants.hingeReadyB);
+                clamp.setPosition(constants.outtakeOpen);
                 State = "Ready for Pixels";
                 break;
 
             case MOVING:
-                hingeA.setPosition(constants.hingeReady);
-                hingeB.setPosition(constants.hingeReady);
-                clamp.setPosition(constants.clampClose);
+                left.setPosition(constants.hingeReadyA);
+                right.setPosition(constants.hingeReadyB);
+                clamp.setPosition(constants.outtakeClose);
                 State = "Loaded and Armed";
                 break;
 
             case AIM:
-                hingeA.setPosition(constants.hingeScore);
-                hingeB.setPosition(constants.hingeScore);
-                clamp.setPosition(constants.clampClose);
+                left.setPosition(constants.hingeScoreA);
+                right.setPosition(constants.hingeScoreB);
+                clamp.setPosition(constants.outtakeClose);
                 State = "Ready for Drop";
                 break;
 
             case SCORE:
-                hingeA.setPosition(constants.hingeScore);
-                hingeB.setPosition(constants.hingeScore);
-                clamp.setPosition(constants.clampOpen);
+                left.setPosition(constants.hingeScoreA);
+                right.setPosition(constants.hingeScoreB);
+                clamp.setPosition(constants.outtakeOpen);
                 State = "Dropping";
                 break;
         }

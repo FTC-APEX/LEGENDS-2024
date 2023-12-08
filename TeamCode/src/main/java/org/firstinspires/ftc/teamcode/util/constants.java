@@ -21,12 +21,13 @@ public class constants {
         HANG
     }
 
-    public static double clampOpen = 1;
-    public static double clampClose = 0.5;
+    public static double outtakeOpen = 0.5;
+    public static double outtakeClose = 1;
 
-    public static double hingeReady = 1;
-    public static double hingeScore = 0.5;
-
+    public static double hingeReadyA = 0.28;
+    public static double hingeReadyB = 1;
+    public static double hingeScoreA = 0.68;
+    public static double hingeScoreB = 0.6;
     public enum outtake {
         MOVING,
         READY,
