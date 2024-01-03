@@ -5,29 +5,25 @@ package org.firstinspires.ftc.teamcode.OpModes.teleOp;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.roadrunner.drive.StandardTrackingWheelLocalizer;
-import org.firstinspires.ftc.teamcode.subsystems.slides;
-import org.firstinspires.ftc.teamcode.subsystems.intake;
-import org.firstinspires.ftc.teamcode.subsystems.outtake;
-import org.firstinspires.ftc.teamcode.util.constants;
-import org.firstinspires.ftc.teamcode.util.environment;
-
-import java.util.Objects;
+import org.firstinspires.ftc.teamcode.subs.slides;
+import org.firstinspires.ftc.teamcode.subs.intake;
+import org.firstinspires.ftc.teamcode.subs.outtake;
+import org.firstinspires.ftc.teamcode.utility.constants;
+import org.firstinspires.ftc.teamcode.utility.environment;
 
 @TeleOp(name = "Krusty")
-public class tele extends LinearOpMode {
+public class DEPRICATED_tele extends LinearOpMode {
     private DcMotorEx frontLeft;
     private DcMotorEx frontRight;
     private DcMotorEx backLeft;
     private DcMotorEx backRight;
 
-    private slides slides;
+    private slides slides = new slides();
     private intake intake = new intake();
     private outtake outtake = new outtake();
     private environment environment;
@@ -48,8 +44,8 @@ public class tele extends LinearOpMode {
         //backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         //backRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        //slides.init(hardwareMap);
-        //intake.init(hardwareMap);
+        slides.init(hardwareMap);
+        intake.init(hardwareMap);
         outtake.init(hardwareMap);
         //environment.init(hardwareMap);
 
@@ -91,15 +87,15 @@ public class tele extends LinearOpMode {
                     Alliance = "Red";
                 }
 
-                if (gamepad1.options && gamepad1.cross) {
-                    Safety = false;
-                }
+//                if (gamepad1.options && gamepad1.cross) {
+//                    Safety = false;
+//                }
+//
+//                if (gamepad1.options && gamepad1.circle) {
+//                    Safety = true;
+//                }
 
-                if (gamepad1.options && gamepad1.circle) {
-                    Safety = true;
-                }
-
-                //Driving - boost not implemented
+//              Driving - boost not implemented
                 if (Safety == true) { //&& currentPose.getY() >= 48 Objects.equals(environment.getTapeColor(), Alliance)  &&
                     if (gamepad1.right_stick_y < - 0.2) {
                         frontLeft.setPower(-0.5);
@@ -110,10 +106,10 @@ public class tele extends LinearOpMode {
                 }
                 else {
                     if (Math.abs(gamepad1.left_stick_y) > 0.2 || Math.abs(gamepad1.left_stick_x) > 0.2 || Math.abs(gamepad1.right_stick_x) > 0.2) {
-                        frontLeft.setPower(((gamepad1.left_stick_y - gamepad1.right_stick_x * 1.22) - gamepad1.left_stick_x) / 1.2);
-                        frontRight.setPower(((gamepad1.left_stick_y * -1 - gamepad1.right_stick_x * 1.22) - gamepad1.left_stick_x) / 1.2);
-                        backRight.setPower(((gamepad1.left_stick_y + gamepad1.right_stick_x * 1.22) - gamepad1.left_stick_x) / 1.2);
-                        backLeft.setPower(((gamepad1.left_stick_y * -1 + gamepad1.right_stick_x * 1.22) - gamepad1.left_stick_x) / 1.2);
+                        frontLeft.setPower(((gamepad1.left_stick_y - gamepad1.left_stick_x * 1.22) - gamepad1.right_stick_x) / 1.2);
+                        frontRight.setPower(((gamepad1.left_stick_y * -1 - gamepad1.left_stick_x * 1.22) - gamepad1.right_stick_x) / 1.2);
+                        backRight.setPower(((gamepad1.left_stick_y + gamepad1.left_stick_x * 1.22) - gamepad1.right_stick_x) / 1.2);
+                        backLeft.setPower(((gamepad1.left_stick_y * -1 + gamepad1.left_stick_x * 1.22) - gamepad1.right_stick_x) / 1.2);
                     } else {
                         frontLeft.setPower(0);
                         frontRight.setPower(0);
@@ -195,6 +191,10 @@ public class tele extends LinearOpMode {
 
                 if (gamepad2.right_bumper) {
                     slides.preset(constants.slides.FULL);
+                }
+
+                if (gamepad2.left_bumper) {
+                    slides.preset(constants.slides.HANG);
                 }
 
                 if (gamepad2.right_stick_y > 0.2) {

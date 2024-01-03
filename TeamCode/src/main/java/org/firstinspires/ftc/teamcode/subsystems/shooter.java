@@ -1,24 +1,28 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.util.constantsRobot;
 
 public class shooter {
-        private Servo Shooter;
+    private Servo shooter;
+    boolean isShot = false;
+    String state = "PRE-INIT";
 
-        public void init(HardwareMap hardwareMap) {
-            Shooter = hardwareMap.get(Servo.class, "Shooter");
-        }
+    public void init(HardwareMap hardwareMap) {
+        shooter = hardwareMap.get(Servo.class, "shooter");
+        shooter.setPosition(constantsRobot.SHOOTER_READY);
+        state = "INIT - READY";
+    }
 
-        double ShooterTense = 0.5; //change later
-        double ShooterLoose = 1; //changer later
+    public void shoot() {
+        shooter.setPosition(constantsRobot.SHOOTER_SHOT);
+        state = "SHOT";
+    }
 
-        public void ShooterLoad() {
-            Shooter.setPosition(ShooterTense);
-        }
+    public String getState() {
+        return state;
+    }
 
-        public void ShooterRelease() {
-            Shooter.setPosition(ShooterLoose);
-        }
 }
-

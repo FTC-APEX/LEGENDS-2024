@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name = "tele")
-public class tele extends LinearOpMode {
+public class DEPRICATED_tele extends LinearOpMode {
     //Input all subsystems & drivetrain
 //    SampleMecanumDrive drivetrain;
 //    slides Slides;

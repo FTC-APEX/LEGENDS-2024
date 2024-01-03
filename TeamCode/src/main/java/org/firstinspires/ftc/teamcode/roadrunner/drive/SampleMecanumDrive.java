@@ -9,7 +9,6 @@ import com.acmerobotics.roadrunner.drive.MecanumDrive;
 import com.acmerobotics.roadrunner.followers.HolonomicPIDVAFollower;
 import com.acmerobotics.roadrunner.followers.TrajectoryFollower;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.localization.ThreeTrackingWheelLocalizer;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
@@ -33,7 +32,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequenceRunner;
-import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
+import org.firstinspires.ftc.teamcode.utility.LynxModuleUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,8 +49,6 @@ import static org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.enc
 import static org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.kA;
 import static org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.kStatic;
 import static org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.kV;
-
-import android.text.style.TabStopSpan;
 
 /*
  * Simple mecanum drive hardware implementation for REV hardware.
@@ -103,10 +100,10 @@ public class SampleMecanumDrive extends MecanumDrive {
 //                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
 //        imu.initialize(parameters);
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
-        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        leftFront = hardwareMap.get(DcMotorEx.class, "frontLeft");
+        leftRear = hardwareMap.get(DcMotorEx.class, "backLeft");
+        rightRear = hardwareMap.get(DcMotorEx.class, "backRight");
+        rightFront = hardwareMap.get(DcMotorEx.class, "frontRight");
 
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);

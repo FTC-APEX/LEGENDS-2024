@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.util;
+package org.firstinspires.ftc.teamcode.utility;
 
 import com.acmerobotics.dashboard.config.Config;
 
@@ -6,10 +6,11 @@ import com.acmerobotics.dashboard.config.Config;
 public class constants {
 
     public static int ready = 0;
-    public static int first = 1;
-    public static int second = 2;
-    public static int third = 3;
-    public static int full = 4;
+    public static int first = 50;
+    public static int second = 150;
+    public static int third = 350;
+    public static int full = 350;
+    public static int hang = 500;
     public static int standby = 2;
     public enum slides {
         READY,

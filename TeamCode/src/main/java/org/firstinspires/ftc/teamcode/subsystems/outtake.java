@@ -3,64 +3,93 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.util.constants;
+import org.firstinspires.ftc.teamcode.util.constantsRobot;
+import org.java_websocket.enums.ReadyState;
 
 public class outtake {
-    public Servo clamp;
-    private Servo left;
-    private Servo right;
-    private String State;
+    private Servo blocker;
+    private Servo pivotA;
+    private Servo pivotB;
+
+    private boolean isBlocking = false;
+    private String state = "PRE-INIT";
 
     public void init(HardwareMap hardwareMap) {
-        clamp = hardwareMap.get(Servo.class, "outtake");
-        left = hardwareMap.get(Servo.class, "left");
-        right = hardwareMap.get(Servo.class, "right");
+        blocker = hardwareMap.get(Servo.class, "blocker");
+        //Add whatever code needed to tune these servos --> Remember to change values in constantsRobot.java
+        pivotA = hardwareMap.get(Servo.class, "a");
+        pivotB = hardwareMap.get(Servo.class, "b");
+        //Add whatever code needed to tune these servos --> Remember to change values in constantsRobot.java
+        state = "INIT";
+        isBlocking = false;
+        setState(constantsRobot.outtake.READY);
     }
-    double ClampClose = -1; //change as necessary
-    double ClampOpen = -0.5; //change as necessary - may be moved to constants
 
-//    public void openClamp() {
-//        clamp.setPosition(ClampClose);
-//    }
-//
-//    public void closeClamp() {
-//        clamp.setPosition(ClampOpen);
-//    }
-
-    public void move(constants.outtake state) {
-        switch (state) {
+    public void setState(constantsRobot.outtake outtakeState) {
+        switch(outtakeState) {
             case READY:
-                left.setPosition(constants.hingeReadyA);
-                right.setPosition(constants.hingeReadyB);
-                clamp.setPosition(constants.outtakeOpen);
-                State = "Ready for Pixels";
+                blocker.setPosition(constantsRobot.BLOCKER_OPEN);
+                pivotA.setPosition(constantsRobot.PIVOT_A_READY);
+                pivotB.setPosition(constantsRobot.PIVOT_B_READY);
+
+                state = "READY";
+                isBlocking = false;
                 break;
 
             case MOVING:
-                left.setPosition(constants.hingeReadyA);
-                right.setPosition(constants.hingeReadyB);
-                clamp.setPosition(constants.outtakeClose);
-                State = "Loaded and Armed";
+                blocker.setPosition(constantsRobot.BLOCKER_CLOSED);
+                pivotA.setPosition(constantsRobot.PIVOT_A_READY);
+                pivotB.setPosition(constantsRobot.PIVOT_B_READY);
+
+                state = "MOVING";
+                isBlocking = true;
                 break;
 
             case AIM:
-                left.setPosition(constants.hingeScoreA);
-                right.setPosition(constants.hingeScoreB);
-                clamp.setPosition(constants.outtakeClose);
-                State = "Ready for Drop";
+                blocker.setPosition(constantsRobot.BLOCKER_CLOSED);
+                pivotA.setPosition(constantsRobot.PIVOT_A_SCORE);
+                pivotB.setPosition(constantsRobot.PIVOT_B_SCORE);
+
+                state = "AIM";
+                isBlocking = true;
                 break;
 
             case SCORE:
-                left.setPosition(constants.hingeScoreA);
-                right.setPosition(constants.hingeScoreB);
-                clamp.setPosition(constants.outtakeOpen);
-                State = "Dropping";
+                blocker.setPosition(constantsRobot.BLOCKER_OPEN);
+                pivotA.setPosition(constantsRobot.PIVOT_A_SCORE);
+                pivotB.setPosition(constantsRobot.PIVOT_B_SCORE);
+
+                state = "SCORE";
+                isBlocking = false;
+                break;
+
+            default: //same as READY -- always initialize at READY, but if that fails, default will run (failsafe)
+                setState(constantsRobot.outtake.READY);
+                state = "DEFAULT --> READY (SOMETHING WENT WRONG IN INIT)";
                 break;
         }
     }
 
-    public String getStatus() {
-        return State;
+    public void reset() {
+        if ((!state.equals("READY") && !state.equals("INIT")) || isBlocking != false) {
+            setState(constantsRobot.outtake.READY);
+        }
+        else if(state.equals("READY")) {
+            state = "READY";
+        }
+        else {
+            state = "RESET ERROR";
+        }
+    }
+
+
+
+    public boolean isBlocking() {
+        return isBlocking;
+    }
+
+    public String getState() {
+        return state;
     }
 
 }

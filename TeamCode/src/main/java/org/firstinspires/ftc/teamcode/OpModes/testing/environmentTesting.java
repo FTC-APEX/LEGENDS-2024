@@ -5,8 +5,8 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.util.environment;
-import org.firstinspires.ftc.teamcode.util.internal;
+import org.firstinspires.ftc.teamcode.utility.environment;
+import org.firstinspires.ftc.teamcode.utility.internal;
 
 
 @TeleOp (name = "Environment Testing OpMode")
