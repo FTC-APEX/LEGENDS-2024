@@ -11,77 +11,63 @@ public class MeepMeepTesting {
         MeepMeep meepMeep = new MeepMeep(800);
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
+                // Assume starting
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 16)
                 .setDimensions(16.5, 17.5)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(-36, -60, Math.toRadians(90)))
-//                                .forward(25)
-//                                .waitSeconds(1.5)
-//                                .back(1)
-//                                .turn(Math.toRadians(-90))
-//                                .forward(80)
-//                                .waitSeconds(2)
-//                                .back(6)
-//                                .turn(Math.toRadians(90))
-//                                .forward(24)
-//                                .turn(Math.toRadians(90))
-//                                .forward(90)
-//                                .waitSeconds(1.5)
-//                                .back(12)
-//                                .turn(Math.toRadians(180))
-//                                .forward(78)
-//                                .turn(Math.toRadians(-90))
-//                                .forward(24)
-//                                .turn(Math.toRadians(90))
-//                                .forward(8)
-//                                .waitSeconds(2)
+                                drive.trajectorySequenceBuilder(new Pose2d(-36, -60, Math.toRadians(90)))
+                                        //Initial Movement
+
+                                        .lineToConstantHeading(new Vector2d(-36, -36))
+                                        //For Zone 1
+                                        .turn(Math.toRadians(90))
+
+                                        .lineToConstantHeading(new Vector2d(48, -36))
+                                        .waitSeconds(2)
 
 
-                                //Initial Movement
-                                .forward(24)
-                                .waitSeconds(1.5)
-                                .lineToConstantHeading(new Vector2d(-36, -36))
-                                //For Zone 1
-                                .turn(Math.toRadians(90))
-                                //For Zone 3
-                                .turn(Math.toRadians(-90))
-
-                                .lineToLinearHeading(new Pose2d(48, -36, Math.toRadians(-90)))
-                                .waitSeconds(2)
-                                //.lineToConstantHeading(new Vector2d(36, -36))
-
-                                //cycles
-                                //.lineToConstantHeading(new Vector2d(36, -36))
-                                .back(18)
-                                .strafeLeft(24)
-                                .turn(Math.toRadians(180))
-                                .forward(96)
-                                //grab two pixels and BOOK IT
-                                .waitSeconds(1)
-                                .back(96)
-                                .turn(Math.toRadians(-180))
-                                .strafeRight(24)
-                                .forward(12)
-                                .waitSeconds(1)
-                                //place pixel
-                                // do this as many times are necessary
+                                        .splineTo(new Vector2d(0, -12), Math.toRadians(180))
 
 
+                                        //.lineToConstantHeading(new Vector2d(48, -12))
+                                        //.lineToConstantHeading(new Vector2d(62, -18))
+                                        //.turn(Math.toRadians(180))
+                                        .lineToConstantHeading(new Vector2d(-60, -12))
 
-                                //park left
-                                .back(18)
+                                        .waitSeconds(1)
+                                        .lineToConstantHeading(new Vector2d(0, -12))
+                                        .splineTo(new Vector2d(48, -36), Math.toRadians(0))
 
-                                .strafeLeft(24)
-                                .forward(24)
+                                        .waitSeconds(1)
 
-                                //park right
-                                //.back(18)
-                                //.strafeRight(24)
-                                //.forward(24)
+                                        .splineTo(new Vector2d(0, -12), Math.toRadians(180))
 
-                                .build()
-                );
+
+                                        //.lineToConstantHeading(new Vector2d(48, -12))
+                                        //.lineToConstantHeading(new Vector2d(62, -18))
+                                        //.turn(Math.toRadians(180))
+                                        .lineToConstantHeading(new Vector2d(-60, -12))
+
+                                        .waitSeconds(1)
+                                        .lineToConstantHeading(new Vector2d(0, -12))
+                                        .splineTo(new Vector2d(48, -36), Math.toRadians(0))
+
+                                        .waitSeconds(1)
+
+                                        //.lineToConstantHeading(new Vector2d(48, -36))
+
+                                        //park left
+                                        //.lineToConstantHeading(new Vector2d(48, -12))
+                                        //.lineToConstantHeading(new Vector2d(65, -12))
+
+                                        //park right
+                                        .lineToConstantHeading(new Vector2d(48, -48))
+                                        .lineToConstantHeading(new Vector2d(48, -60))
+                                        .lineToConstantHeading(new Vector2d(60, -60))
+
+                                        .build()
+                ); //Everyone should have turkeys to f
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
                 .setDarkMode(true)
