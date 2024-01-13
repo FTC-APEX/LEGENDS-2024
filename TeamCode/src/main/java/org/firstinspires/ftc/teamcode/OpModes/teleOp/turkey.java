@@ -29,6 +29,7 @@ public class turkey extends LinearOpMode{
         waitForStart();
             while (!isStopRequested()) {
                 while (opModeIsActive()) {
+
                 }
             }
     }
