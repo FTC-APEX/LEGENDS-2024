@@ -41,10 +41,6 @@ public class red_back extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         drive = new SampleMecanumDrive(hardwareMap);
-        intake.init(hardwareMap);
-        outtake.init(hardwareMap);
-        slides.init(hardwareMap);
-        kamera.init(hardwareMap);
 
         while (opModeInInit()) {
             drive.setPoseEstimate(startPos);
