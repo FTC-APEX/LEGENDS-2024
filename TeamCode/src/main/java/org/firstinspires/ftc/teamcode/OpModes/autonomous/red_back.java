@@ -52,36 +52,64 @@ public class red_back extends LinearOpMode {
 
         waitForStart();
         TrajectorySequence PURPLE_CAM;
+        TrajectorySequence SCORE_YELLOW;
 
         if (zone == OpenCV.Pipeline.position.LEFT) {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
                     .lineToConstantHeading(new Vector2d(-26, -48))
                     .splineTo(new Vector2d(-40, -32), Math.toRadians(125))
                     .build();
+
+            SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
+                    .setReversed(true)
+                    .splineTo(new Vector2d(-24, -36), Math.toRadians(0))
+                    .lineToConstantHeading((new Vector2d(0, -36)))
+                    .splineTo(new Vector2d(48, -30), Math.toRadians(0))
+                    .setReversed(false)
+                    .build();
         }
         else if(zone == OpenCV.Pipeline.position.CENTER) {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
                     .lineToConstantHeading(new Vector2d(-36, -34))
                     .build();
+
+            SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
+                .setReversed(true)
+                .splineTo(new Vector2d(-24, -36), Math.toRadians(0))
+                .lineToConstantHeading((new Vector2d(0, -36)))
+                .splineTo(new Vector2d(48, -36), Math.toRadians(0))
+                .setReversed(false)
+                .build();
         }
         else if (zone == OpenCV.Pipeline.position.RIGHT) {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
                     .lineToConstantHeading(new Vector2d(-36, -48))
                     .splineTo(new Vector2d(-32, -32), Math.toRadians(55))
                     .build();
+
+            SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
+                    .setReversed(true)
+                    .splineTo(new Vector2d(-24, -36), Math.toRadians(0))
+                    .lineToConstantHeading((new Vector2d(0, -36)))
+                    .splineTo(new Vector2d(48, -42), Math.toRadians(0))
+                    .setReversed(false)
+                    .build();
         }
         else { //lucky 2
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
                     .lineToConstantHeading(new Vector2d(-36, -34))
                     .build();
-        }
 
-        TrajectorySequence SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
+            SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
                 .setReversed(true)
                 .splineTo(new Vector2d(-24, -36), Math.toRadians(0))
-                .lineToConstantHeading(new Vector2d(48, -36))
+                .lineToConstantHeading((new Vector2d(0, -36)))
+                .splineTo(new Vector2d(48, -36), Math.toRadians(0))
                 .setReversed(false)
                 .build();
+        }
+
+
 
         TrajectorySequence TO_STACK = drive.trajectorySequenceBuilder(SCORE_YELLOW.end())
                 .splineTo(new Vector2d(0, -12), Math.toRadians(180))

@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.core.colorscheme.scheme.ColorSchemeBlueDark;
+import com.noahbres.meepmeep.core.colorscheme.scheme.ColorSchemeRedDark;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
@@ -14,7 +15,7 @@ public class MeepMeepTestingRedBack {
         RoadRunnerBotEntity Bot = new DefaultBotBuilder(meepMeep) //red side away from stage
                 // Assume starting
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setColorScheme(new ColorSchemeBlueDark())
+                .setColorScheme(new ColorSchemeRedDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 16)
                 .setDimensions(16.5, 17.5)
                 .followTrajectorySequence(drive ->
@@ -23,9 +24,11 @@ public class MeepMeepTestingRedBack {
 
                                         .lineToConstantHeading(new Vector2d(-36, -34))
 
+
                                         .setReversed(true)
                                         .splineTo(new Vector2d(-24, -36), Math.toRadians(0))
-                                        .lineToConstantHeading(new Vector2d(48, -36))
+                                        .lineToConstantHeading((new Vector2d(0, -36)))
+                                        .splineTo(new Vector2d(48, -30), Math.toRadians(0))
                                         .setReversed(false)
                                         .waitSeconds(2)
 
