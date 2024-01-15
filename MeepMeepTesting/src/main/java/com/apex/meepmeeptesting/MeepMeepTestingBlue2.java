@@ -11,7 +11,7 @@ public class MeepMeepTestingBlue2 {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 
-        RoadRunnerBotEntity Bot = new DefaultBotBuilder(meepMeep) //blue side away from stage
+        RoadRunnerBotEntity Bot = new DefaultBotBuilder(meepMeep) //blue side near stage
                 // Assume starting
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setColorScheme(new ColorSchemeBlueDark())
