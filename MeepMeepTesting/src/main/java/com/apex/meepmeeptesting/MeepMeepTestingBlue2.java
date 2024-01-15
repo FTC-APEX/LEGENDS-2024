@@ -22,10 +22,10 @@ public class MeepMeepTestingBlue2 {
                                 //Initial Movement
 
                                 //zone2
-                                .lineToConstantHeading(new Vector2d(-36, 34))
+                                .lineToConstantHeading(new Vector2d(12, 34))
 
                                 .setReversed(true)
-                                .splineTo(new Vector2d(-24, 36), Math.toRadians(0))
+                                .splineTo(new Vector2d(24, 36), Math.toRadians(0))
                                 .lineToConstantHeading(new Vector2d(48, 36))
                                 .setReversed(false)
                                 .waitSeconds(2)
