@@ -24,11 +24,9 @@ public class MeepMeepTestingRedBack {
 
                                         .lineToConstantHeading(new Vector2d(-36, -34))
 
-
                                         .setReversed(true)
                                         .splineTo(new Vector2d(-24, -36), Math.toRadians(0))
-                                        .lineToConstantHeading((new Vector2d(0, -36)))
-                                        .splineTo(new Vector2d(48, -30), Math.toRadians(0))
+                                        .lineToConstantHeading(new Vector2d(48, -36))
                                         .setReversed(false)
                                         .waitSeconds(2)
 

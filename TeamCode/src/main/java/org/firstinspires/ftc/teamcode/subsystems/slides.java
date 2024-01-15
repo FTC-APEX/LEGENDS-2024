@@ -1,148 +1,99 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import org.firstinspires.ftc.teamcode.util.constantsRobot;
-
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.utility.constants;
 
 public class slides {
-    private DcMotorEx left;
-    private DcMotorEx right;
+    DcMotorEx left, right;
+    int height;
+    int target;
+    double leftPower, rightPower;
 
-    private int tolerance = 5; // Placeholder Value --> Must be tuned with real bot
+    private String State;
 
-    private int lastLeftError = 0;
-    private int lastRightError = 0;
+    //Remember to check & change direction when needed
+    public void init(HardwareMap map){
+        left = map.get(DcMotorEx.class, "liftLeft");
+        left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-    private double[] pid = {constantsRobot.kp, constantsRobot.ki, constantsRobot.kd, constantsRobot.kg}; // kp, ki, kd, kg (gravity constant) --> go tune later in constantsRobot.java
+        right = map.get(DcMotorEx.class, "liftRight");
+        right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-    ElapsedTime timer = new ElapsedTime();
-
-    private String state = "PRE_INIT";
-
-    public void init(HardwareMap hardwareMap) {
-        left = hardwareMap.get(DcMotorEx.class, "left");
-        right = hardwareMap.get(DcMotorEx.class, "right");
-        right.setDirection(DcMotorEx.Direction.REVERSE); // This might be left, so check once bot is built
-
-        left.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        right.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-
-        left.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        right.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-
-        state = "INIT";
-
-        setPosition(constantsRobot.slides.READY);
+        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void runToPosition(int target) {
-        while(Math.abs(lastLeftError) > tolerance | Math.abs(lastRightError) > tolerance) {
-            int leftPos = left.getCurrentPosition();
-            int rightPos = right.getCurrentPosition();
-
-            int leftError = target - leftPos;
-            int rightError = target - rightPos;
-
-            double leftD = (leftError - lastLeftError)/timer.seconds();
-            double rightD = (rightError - lastRightError)/timer.seconds();
-
-            double leftIntegralSum = 0;
-            leftIntegralSum = leftIntegralSum + (leftError * timer.seconds());
-            double rightIntgegralSum = 0;
-            rightIntgegralSum = rightIntgegralSum + (rightError * timer.seconds());
-
-            double leftPower = (pid[0]*leftError) + (pid[1]*leftIntegralSum) + (pid[2]*leftD);
-            double rightPower = (pid[0]*rightError) + (pid[1]*rightIntgegralSum) + (pid[2]*rightD);
-
-            if (leftPower > constantsRobot.MAX_POWER) {
-                leftPower = constantsRobot.MAX_POWER;
-            }
-
-            if (rightPower > constantsRobot.MAX_POWER) {
-                rightPower = constantsRobot.MAX_POWER;
-            }
-
-            left.setPower(leftPower);
-            right.setPower(rightPower);
-
-            returnLeftValue(leftPower);
-            returnRightValue(rightPower);
-
-            lastLeftError = leftError;
-            lastRightError = rightError;
-
-            timer.reset();
-
-        }
-    }
-
-    public void setPosition(constantsRobot.slides slideState) {
-        switch (slideState) {
+    public void preset(constants.slides preset){
+        switch (preset) {
             case READY:
-                runToPosition(constantsRobot.READY);
-                state = "READY";
+                setHeight(constants.ready);
+                State = "Retracted";
                 break;
 
             case FIRST:
-                runToPosition(constantsRobot.LINE1);
-                state = "FIRST";
+                setHeight(constants.first);
+                State = "First Stage (Line 1)";
                 break;
 
             case SECOND:
-                runToPosition(constantsRobot.LINE2);
-                state = "SECOND";
+                setHeight(constants.second);
+                State = "Second Stage (Line 2)";
                 break;
 
             case THIRD:
-                runToPosition(constantsRobot.LINE3);
-                state = "THIRD";
+                setHeight(constants.third);
+                State = "Third State (Line 3)";
                 break;
 
             case FULL:
-                runToPosition(constantsRobot.FULL);
-                state = "FULL";
+                setHeight(constants.full);
+                State = "Fully Extended";
                 break;
 
-            case HANG:
-                runToPosition(constantsRobot.HANG);
-                state = "HANG";
-                break;
-
-            default:
-                setPosition(constantsRobot.slides.READY);
-                state = "DEFAULT --> READY (SOMETHING WENT WRONG IN INIT)";
+            case CUSTOM:
+                State = "Custom Slide Height - refer to next line";
                 break;
         }
     }
 
+    public void setHeight(int target){
+        this.target = target;
+        double currentHeight = right.getCurrentPosition();
 
+        if (currentHeight < target) {
+            leftPower = 0.4;
+            rightPower = 0.4;
+        }
 
+        if (currentHeight > target) {
+            leftPower = -0.4;
+            rightPower = -0.4;
+        }
 
+        left.setTargetPosition(this.target);
+        right.setTargetPosition(this.target);
 
+        left.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        right.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
-    public int getCurrentPosition() {
-        return left.getCurrentPosition();
+        left.setPower(leftPower);
+        right.setPower(rightPower);
     }
 
-    //used for tuning PIDs only
-    public int getLastLeftError() {
-        return lastLeftError;
+    public int getCurrentHeight(){
+        height = ((left.getCurrentPosition() + right.getCurrentPosition()) / 2);
+        return height;
     }
 
-    public int getLastRightError() {
-        return lastRightError;
+    public void reset(){
+
     }
 
-    public double returnLeftValue(double value) {
-        return value;
+    public String getStatus() {
+        return State;
     }
-
-    public double returnRightValue(double value) {
-        return value;
-    }
-
-
 
 }
