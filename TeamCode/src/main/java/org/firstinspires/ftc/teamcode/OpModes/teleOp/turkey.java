@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.roadrunner.util.PoseStorage;
 @TeleOp(name = "Turkey")
 public class turkey extends LinearOpMode{
     //Subsystems
-    static SampleMecanumDrive driveTrain;
+    static SampleMecanumDrive drive;
     intake intake;
     outtake outtake;
     slides slides;
@@ -29,9 +29,7 @@ public class turkey extends LinearOpMode{
     @Override
     public void runOpMode() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        driveTrain = new SampleMecanumDrive(hardwareMap);
-
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        drive = new SampleMecanumDrive(hardwareMap);
 
         drive.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
