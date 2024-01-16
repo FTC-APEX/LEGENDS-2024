@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.roadrunner.util.PoseStorage;
 import org.firstinspires.ftc.teamcode.subs.kamera;
 import org.firstinspires.ftc.teamcode.subsystems.intake;
 import org.firstinspires.ftc.teamcode.subsystems.outtake;
@@ -131,6 +132,7 @@ public class red_back extends LinearOpMode {
                 .lineToConstantHeading(new Vector2d(60, -60))
                 .build();
 
+
         while (!isStopRequested() && opModeIsActive()) {
             telemetry.addData("Zone: ", zone);
             telemetry.addLine("");
@@ -188,6 +190,7 @@ public class red_back extends LinearOpMode {
                     }
                     break;
                 case END:
+                    PoseStorage.currentPose = drive.getPoseEstimate();
                     break;
 
 

@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.roadrunner.util.PoseStorage;
 import org.firstinspires.ftc.teamcode.subs.kamera;
 import org.firstinspires.ftc.teamcode.subsystems.intake;
 import org.firstinspires.ftc.teamcode.subsystems.outtake;
@@ -18,7 +19,7 @@ import org.firstinspires.ftc.teamcode.subsystems.slides;
 import org.firstinspires.ftc.teamcode.util.constantsAutonomous.redBack;
 import org.firstinspires.ftc.teamcode.utility.OpenCV;
 
-@Autonomous (name = "Red Back Auto w/ Cam")
+@Autonomous (name = "Blue Back Auto w/ Cam")
 public class blue_back extends LinearOpMode {
     ElapsedTime runtime = new ElapsedTime();
 
@@ -188,7 +189,9 @@ public class blue_back extends LinearOpMode {
                     }
                     break;
                 case END:
+                    PoseStorage.currentPose = drive.getPoseEstimate();
                     break;
+
 
 
             }
