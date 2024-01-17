@@ -164,7 +164,7 @@ public class DEPRICATED_tele extends LinearOpMode {
 //                if (gamepad1.right_bumper) {
 //                    intake.state(constants.intakeState.STOP);
 //                }
-
+//
 //                if (gamepad1.right_trigger != 0) {
 //                    intake.state(constants.intakeState.SUCK);
 //                }

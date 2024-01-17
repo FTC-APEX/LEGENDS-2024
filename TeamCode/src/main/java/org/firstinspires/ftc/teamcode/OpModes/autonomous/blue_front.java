@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.subsystems.slides;
 import org.firstinspires.ftc.teamcode.util.constantsAutonomous.redBack;
 import org.firstinspires.ftc.teamcode.utility.OpenCV;
 
-@Autonomous (name = "Red Back Auto w/ Cam")
+@Autonomous (name = "Blue Front Auto w/ Cam")
 public class blue_front extends LinearOpMode {
     ElapsedTime runtime = new ElapsedTime();
 

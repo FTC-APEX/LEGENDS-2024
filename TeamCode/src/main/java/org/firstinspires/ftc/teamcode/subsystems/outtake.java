@@ -17,8 +17,8 @@ public class outtake {
     public void init(HardwareMap hardwareMap) {
         blocker = hardwareMap.get(Servo.class, "blocker");
         //Add whatever code needed to tune these servos --> Remember to change values in constantsRobot.java
-        pivotA = hardwareMap.get(Servo.class, "a");
-        pivotB = hardwareMap.get(Servo.class, "b");
+        pivotA = hardwareMap.get(Servo.class, "left");
+        pivotB = hardwareMap.get(Servo.class, "right");
         //Add whatever code needed to tune these servos --> Remember to change values in constantsRobot.java
         state = "INIT";
         isBlocking = false;

@@ -9,11 +9,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.subsystems.intake;
+import org.firstinspires.ftc.teamcode.subs.intake;
 import org.firstinspires.ftc.teamcode.subsystems.outtake;
 import org.firstinspires.ftc.teamcode.subsystems.slides;
 import org.firstinspires.ftc.teamcode.subsystems.shooter;
 import org.firstinspires.ftc.teamcode.roadrunner.util.PoseStorage;
+import org.firstinspires.ftc.teamcode.util.constantsRobot;
+import org.firstinspires.ftc.teamcode.utility.constants;
 
 
 @TeleOp(name = "Turkey")
@@ -30,6 +32,13 @@ public class turkey extends LinearOpMode{
     public void runOpMode() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         drive = new SampleMecanumDrive(hardwareMap);
+        intake = new intake();
+        outtake = new outtake();
+        slides = new slides();
+        intake.init(hardwareMap);
+        outtake.init(hardwareMap);
+        slides.init(hardwareMap);
+
 
         drive.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -58,6 +67,64 @@ public class turkey extends LinearOpMode{
 
             );
 
+            if (gamepad1.right_trigger < 0.3 | gamepad1.left_trigger < 0.3) {
+                    intake.state(constants.intakeState.STOP);
+                }
+            if (gamepad1.right_trigger >= 0.3) {
+                    intake.state(constants.intakeState.SUCK);
+                }
+            if (gamepad1.left_trigger >= 0.3) {
+                    intake.state(constants.intakeState.SPIT);
+                }
+
+            if (gamepad2.cross) {
+                outtake.setState(constantsRobot.outtake.READY);
+            }
+            if (gamepad2.square) {
+                outtake.setState(constantsRobot.outtake.MOVING);
+            }
+            if (gamepad2.circle) {
+                outtake.setState(constantsRobot.outtake.AIM);
+            }
+            if (gamepad2.triangle) {
+                outtake.setState(constantsRobot.outtake.SCORE);
+            }
+
+            if (gamepad2.dpad_down) {
+                slides.preset(constants.slides.READY);
+            }
+
+            if (gamepad2.dpad_left) {
+                slides.preset(constants.slides.FIRST);
+            }
+
+            if (gamepad2.dpad_right) {
+                slides.preset(constants.slides.SECOND);
+            }
+
+            if (gamepad2.dpad_up) {
+                slides.preset(constants.slides.THIRD);
+            }
+
+            if (gamepad2.right_bumper) {
+                slides.preset(constants.slides.FULL);
+            }
+
+            if (gamepad2.left_bumper) {
+                slides.preset(constants.slides.HANG);
+            }
+
+            if (gamepad2.right_stick_y > 0.2) {
+                slides.preset(constants.slides.CUSTOM);
+                slides.setHeight(slides.getCurrentHeight() + 1); // Switch value to something during testing
+                telemetry.addData("Custom Slide Height: ", slides.getCurrentHeight());
+            }
+
+            if (gamepad2.right_stick_y < -0.2) {
+                slides.preset(constants.slides.CUSTOM);
+                slides.setHeight(slides.getCurrentHeight() - 1); // Switch value to something during testing
+                telemetry.addData("Custom Slide Height: ", slides.getCurrentHeight());
+            }
 
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
@@ -65,6 +132,10 @@ public class turkey extends LinearOpMode{
             telemetry.addData("Left Stick Y:", gamepad1.left_stick_y);
             telemetry.addData("Right Stick X:", gamepad1.right_stick_x);
             telemetry.addData("Right Stick Y:", gamepad1.right_stick_y);
+            telemetry.addData("Right Bumper", gamepad1.right_bumper);
+            telemetry.addData("Left Bumper:", gamepad1.left_bumper);
+            telemetry.addData("Left Trigger:", gamepad1.left_stick_x);
+            telemetry.addData("Slide Current Height", slides.getCurrentHeight());
             telemetry.addData("heading", poseEstimate.getHeading());
             telemetry.addLine("testing");
             telemetry.update();

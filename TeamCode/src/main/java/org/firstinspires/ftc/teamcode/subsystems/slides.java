@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.util.constantsRobot;
 import org.firstinspires.ftc.teamcode.utility.constants;
 
 public class slides {
@@ -29,27 +30,27 @@ public class slides {
     public void preset(constants.slides preset){
         switch (preset) {
             case READY:
-                setHeight(constants.ready);
+                setHeight(constantsRobot.READY);
                 State = "Retracted";
                 break;
 
             case FIRST:
-                setHeight(constants.first);
+                setHeight(constantsRobot.LINE1);
                 State = "First Stage (Line 1)";
                 break;
 
             case SECOND:
-                setHeight(constants.second);
+                setHeight(constantsRobot.LINE2);
                 State = "Second Stage (Line 2)";
                 break;
 
             case THIRD:
-                setHeight(constants.third);
+                setHeight(constantsRobot.LINE3);
                 State = "Third State (Line 3)";
                 break;
 
             case FULL:
-                setHeight(constants.full);
+                setHeight(constantsRobot.FULL);
                 State = "Fully Extended";
                 break;
 
@@ -64,17 +65,17 @@ public class slides {
         double currentHeight = right.getCurrentPosition();
 
         if (currentHeight < target) {
-            leftPower = 0.4;
-            rightPower = 0.4;
+            leftPower = 0.3;
+            rightPower = 0.3;
         }
 
         if (currentHeight > target) {
-            leftPower = -0.4;
-            rightPower = -0.4;
+            leftPower = -0.3;
+            rightPower = -0.3;
         }
 
         left.setTargetPosition(this.target);
-        right.setTargetPosition(this.target);
+        right.setTargetPosition(-this.target);
 
         left.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         right.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);

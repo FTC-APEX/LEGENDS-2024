@@ -7,7 +7,7 @@ public class constantsRobot {
 
 
     //Slide Constants
-    public static double MAX_POWER = 0.6;
+    public static double MAX_POWER = 0.2;
     public static double MIN_POWER = 0.2;
 
     public static double kp;
@@ -65,14 +65,14 @@ public class constantsRobot {
     }
 
     //Temporary Values, Remember to Change
-    public static int BLOCKER_OPEN = 1;
-    public static int BLOCKER_CLOSED = 0;
+    public static double BLOCKER_OPEN = 1;
+    public static double BLOCKER_CLOSED = 0;
 
-    public static int PIVOT_A_READY = 0;
-    public static int PIVOT_B_READY = 0;
+    public static double PIVOT_A_READY = 0;
+    public static double PIVOT_B_READY = 1;
 
-    public static int PIVOT_A_SCORE = 0;
-    public static int PIVOT_B_SCORE = 0;
+    public static double PIVOT_A_SCORE = 1;
+    public static double PIVOT_B_SCORE = 0;
 
     //shooter constants
     public static double SHOOTER_READY = 0;
