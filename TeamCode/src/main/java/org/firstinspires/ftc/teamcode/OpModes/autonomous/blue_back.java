@@ -77,8 +77,9 @@ public class blue_back extends LinearOpMode {
             SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
                     .setReversed(true)
                     .splineTo(new Vector2d(-24, 36), Math.toRadians(0))
-                    .lineToConstantHeading((new Vector2d(0, 36)))
-                    .splineTo(new Vector2d(48, 36), Math.toRadians(0))
+                    .lineToConstantHeading(new Vector2d(48, 36))
+                    //.lineToConstantHeading((new Vector2d(0, 36)))
+                    //.splineTo(new Vector2d(48, 36), Math.toRadians(0))
                     .setReversed(false)
                     .build();
         }
