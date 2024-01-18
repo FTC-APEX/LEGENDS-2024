@@ -15,11 +15,11 @@ public class constantsRobot {
     public static double kd;
     public static double kg;
 
-    public static int READY /* = 0*/;
-    public static int LINE1 /* = 1*/;
-    public static int LINE2 /* = 2*/;
-    public static int LINE3 /* = 3*/;
-    public static int FULL /* = 4*/;
+    public static int READY = 0;
+    public static int LINE1 = 1500;
+    public static int LINE2 = 2000;
+    public static int LINE3 = 2500;
+    public static int FULL  = 3000;
     public static int HANG /* = 3.5*/;
 
     public enum slides{
@@ -65,14 +65,14 @@ public class constantsRobot {
     }
 
     //Temporary Values, Remember to Change
-    public static double BLOCKER_OPEN = 1;
-    public static double BLOCKER_CLOSED = 0;
+    public static double BLOCKER_OPEN = 0.5;
+    public static double BLOCKER_CLOSED = 0.9;
 
-    public static double PIVOT_A_READY = 0;
-    public static double PIVOT_B_READY = 1;
+    public static double PIVOT_A_READY = 0.49;
+    public static double PIVOT_B_READY = 0.51;
 
-    public static double PIVOT_A_SCORE = 1;
-    public static double PIVOT_B_SCORE = 0;
+    public static double PIVOT_A_SCORE = 0.9;
+    public static double PIVOT_B_SCORE = 0.1;
 
     //shooter constants
     public static double SHOOTER_READY = 0;
