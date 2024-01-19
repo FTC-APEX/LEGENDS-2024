@@ -114,6 +114,14 @@ public class turkey extends LinearOpMode{
                 slides.preset(constants.slides.HANG);
             }
 
+            if (gamepad2.right_trigger > 0.3){
+                outtake.openBlocker();
+            }
+
+            if (gamepad2.left_trigger > 0.3){
+                outtake.closeBlocker();
+            }
+
             if (gamepad2.right_stick_y > 0.2) {
                 slides.preset(constants.slides.CUSTOM);
                 slides.setHeight(slides.getCurrentHeight() + 1); // Switch value to something during testing

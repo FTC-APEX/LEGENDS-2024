@@ -33,8 +33,8 @@ public class constantsRobot {
 
     //Intake Constants
 
-    public static double STANDARD = 1.0;
-    public static double CONTROLLED = 0.4;
+    public static double STANDARD = 2.0;
+    public static double CONTROLLED = 1.0;
 
     public enum intake {
         SUCK,
@@ -68,8 +68,8 @@ public class constantsRobot {
     public static double BLOCKER_OPEN = 0.5;
     public static double BLOCKER_CLOSED = 0.9;
 
-    public static double PIVOT_A_READY = 0.49;
-    public static double PIVOT_B_READY = 0.51;
+    public static double PIVOT_A_READY = 0.51;
+    public static double PIVOT_B_READY = 0.49;
 
     public static double PIVOT_A_SCORE = 0.9;
     public static double PIVOT_B_SCORE = 0.1;

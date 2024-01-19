@@ -65,13 +65,13 @@ public class slides {
         double currentHeight = right.getCurrentPosition();
 
         if (currentHeight < target) {
-            leftPower = 0.3;
-            rightPower = 0.3;
+            leftPower = 0.5;
+            rightPower = 0.5;
         }
 
         if (currentHeight > target) {
-            leftPower = -0.3;
-            rightPower = -0.3;
+            leftPower = -0.5;
+            rightPower = -0.5;
         }
 
         left.setTargetPosition(this.target);
