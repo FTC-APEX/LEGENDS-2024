@@ -21,8 +21,8 @@ import org.firstinspires.ftc.teamcode.util.constantsRobot;
 import org.firstinspires.ftc.teamcode.utility.OpenCV;
 import org.firstinspires.ftc.teamcode.utility.constants;
 
-@Autonomous (name = "Broken Blue -- Park Auto")
-public class yellowPurpleBlue extends LinearOpMode {
+@Autonomous (name = "Yellow Purple Blue -- Real")
+public class yellowPurpleBlueReal extends LinearOpMode {
     ElapsedTime runtime = new ElapsedTime();
 
     intake intake = new intake();
@@ -44,6 +44,7 @@ public class yellowPurpleBlue extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         drive = new SampleMecanumDrive(hardwareMap);
+        intake.init(hardwareMap);
 
         while (opModeInInit()) {
             drive.setPoseEstimate(startPos);
@@ -76,7 +77,7 @@ public class yellowPurpleBlue extends LinearOpMode {
         }
         else if(zone == OpenCV.Pipeline.position.CENTER) {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-                    .lineToConstantHeading(new Vector2d(-36, 10))
+                    .lineToConstantHeading(new Vector2d(-36, 34))
                     .addTemporalMarker(2, () ->
                             intake.setIntake(constantsRobot.intake.SPIT))
                     .build();
@@ -108,6 +109,8 @@ public class yellowPurpleBlue extends LinearOpMode {
         else { //lucky 2
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
                     .lineToConstantHeading(new Vector2d(-36, 10))
+                    .addTemporalMarker(2, () ->
+                            intake.setIntake(constantsRobot.intake.SPIT))
                     .build();
 
             SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())

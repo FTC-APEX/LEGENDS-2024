@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.subsystems.intake;
 import org.firstinspires.ftc.teamcode.subsystems.outtake;
 import org.firstinspires.ftc.teamcode.subsystems.slides;
 import org.firstinspires.ftc.teamcode.util.constantsAutonomous.redBack;
+import org.firstinspires.ftc.teamcode.util.constantsRobot;
 import org.firstinspires.ftc.teamcode.utility.OpenCV;
 
 @Autonomous (name = "Red Auto w/ Cam (Yellow Purple Only)")
@@ -41,7 +42,7 @@ public class yellowPurpleRed extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-
+        intake.init(hardwareMap);
         drive = new SampleMecanumDrive(hardwareMap);
 
         while (opModeInInit()) {
@@ -60,6 +61,8 @@ public class yellowPurpleRed extends LinearOpMode {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
                     .lineToConstantHeading(new Vector2d(-26, -48))
                     .splineTo(new Vector2d(-40, -32), Math.toRadians(125))
+                    .addTemporalMarker(2, () ->
+                            intake.setIntake(constantsRobot.intake.SPIT))
                     .build();
 
             SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
@@ -73,6 +76,8 @@ public class yellowPurpleRed extends LinearOpMode {
         else if(zone == OpenCV.Pipeline.position.CENTER) {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
                     .lineToConstantHeading(new Vector2d(-36, -34))
+                    .addTemporalMarker(2, () ->
+                            intake.setIntake(constantsRobot.intake.SPIT))
                     .build();
 
             SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
@@ -87,6 +92,8 @@ public class yellowPurpleRed extends LinearOpMode {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
                     .lineToConstantHeading(new Vector2d(-36, -48))
                     .splineTo(new Vector2d(-32, -32), Math.toRadians(55))
+                    .addTemporalMarker(2, () ->
+                            intake.setIntake(constantsRobot.intake.SPIT))
                     .build();
 
             SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
@@ -100,6 +107,8 @@ public class yellowPurpleRed extends LinearOpMode {
         else { //lucky 2
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
                     .lineToConstantHeading(new Vector2d(-36, -34))
+                    .addTemporalMarker(2, () ->
+                            intake.setIntake(constantsRobot.intake.SPIT))
                     .build();
 
             SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())

@@ -29,7 +29,7 @@ public class red_back extends LinearOpMode {
     SampleMecanumDrive drive;
     kamera kamera = new kamera();
 
-    Pose2d startPos = new Pose2d(-36, -60, Math.toRadians(90));
+    Pose2d startPos = new Pose2d(-36, -60, Math.toRadians(0));
     OpenCV.Pipeline.position zone = OpenCV.Pipeline.position.UNKNOWN;
     int cycles = 0;
     boolean purple = false;
@@ -42,6 +42,8 @@ public class red_back extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         drive = new SampleMecanumDrive(hardwareMap);
+
+        outtake.init(hardwareMap);
 
         while (opModeInInit()) {
             drive.setPoseEstimate(startPos);

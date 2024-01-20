@@ -35,9 +35,11 @@ public class turkey extends LinearOpMode{
         intake = new intake();
         outtake = new outtake();
         slides = new slides();
+        shooter = new shooter();
         intake.init(hardwareMap);
         outtake.init(hardwareMap);
         slides.init(hardwareMap);
+        shooter.init(hardwareMap);
 
 
         drive.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
@@ -48,9 +50,11 @@ public class turkey extends LinearOpMode{
         while (opModeInInit()) {
             telemetry.addLine("Robot Initialized");
             telemetry.update();
+            shooter.ShooterLoad();
         }
 
         waitForStart();
+
         while (opModeIsActive() && !isStopRequested()) {
             drive.update();
             Vector2d input = new Vector2d(
@@ -64,18 +68,17 @@ public class turkey extends LinearOpMode{
                             input.getY(),
                             -gamepad1.right_stick_x
                     )
-
             );
 
             if (gamepad1.right_trigger < 0.3 | gamepad1.left_trigger < 0.3) {
                     intake.state(constants.intakeState.STOP);
-                }
+            }
             if (gamepad1.right_trigger >= 0.3) {
                     intake.state(constants.intakeState.SUCK);
-                }
+            }
             if (gamepad1.left_trigger >= 0.3) {
                     intake.state(constants.intakeState.SPIT);
-                }
+            }
 
             if (gamepad2.cross) {
                 outtake.setState(constantsRobot.outtake.READY);
@@ -97,7 +100,6 @@ public class turkey extends LinearOpMode{
             if (gamepad2.dpad_left) {
                 slides.preset(constants.slides.FIRST);
             }
-
             if (gamepad2.dpad_right) {
                 slides.preset(constants.slides.SECOND);
             }
@@ -132,6 +134,14 @@ public class turkey extends LinearOpMode{
                 slides.preset(constants.slides.CUSTOM);
                 slides.setHeight(slides.getCurrentHeight() - 1); // Switch value to something during testing
                 telemetry.addData("Custom Slide Height: ", slides.getCurrentHeight());
+            }
+
+            if (gamepad2.share) {
+                shooter.ShooterRelease();
+            }
+
+            if (gamepad2.options) {
+                shooter.ShooterLoad();
             }
 
             telemetry.addData("x", poseEstimate.getX());

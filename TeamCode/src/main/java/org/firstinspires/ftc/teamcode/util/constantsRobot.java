@@ -68,11 +68,11 @@ public class constantsRobot {
     public static double BLOCKER_OPEN = 0.5;
     public static double BLOCKER_CLOSED = 0.9;
 
-    public static double PIVOT_A_READY = 0.51;
-    public static double PIVOT_B_READY = 0.49;
+    public static double PIVOT_A_READY = 0.2;
+    public static double PIVOT_B_READY = 0.8;
 
-    public static double PIVOT_A_SCORE = 0.9;
-    public static double PIVOT_B_SCORE = 0.1;
+    public static double PIVOT_A_SCORE = 0.65;
+    public static double PIVOT_B_SCORE = 0.35;
 
     //shooter constants
     public static double SHOOTER_READY = 0;

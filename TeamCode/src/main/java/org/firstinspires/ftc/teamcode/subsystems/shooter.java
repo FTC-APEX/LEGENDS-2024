@@ -10,8 +10,8 @@ public class shooter {
             Shooter = hardwareMap.get(Servo.class, "Shooter");
         }
 
-        double ShooterTense = 0.5; //change later
-        double ShooterLoose = 1; //changer later
+        double ShooterTense = 0.4; //change later
+        double ShooterLoose = 0; //changer later
 
         public void ShooterLoad() {
             Shooter.setPosition(ShooterTense);
