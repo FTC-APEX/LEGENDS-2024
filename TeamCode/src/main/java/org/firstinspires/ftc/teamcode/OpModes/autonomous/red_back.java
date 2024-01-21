@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.OpModes.autonomous;
 
+import static org.firstinspires.ftc.teamcode.util.constantsRobot.startHeading;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -29,7 +31,7 @@ public class red_back extends LinearOpMode {
     SampleMecanumDrive drive;
     kamera kamera = new kamera();
 
-    Pose2d startPos = new Pose2d(-36, -60, Math.toRadians(0));
+    Pose2d startPos = new Pose2d(-36, -60, Math.toRadians(startHeading));
     OpenCV.Pipeline.position zone = OpenCV.Pipeline.position.UNKNOWN;
     int cycles = 0;
     boolean purple = false;

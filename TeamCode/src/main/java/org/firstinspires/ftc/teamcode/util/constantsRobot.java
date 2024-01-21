@@ -78,4 +78,11 @@ public class constantsRobot {
     public static double SHOOTER_READY = 0;
     public static double SHOOTER_SHOT = 1;
 
+    public static boolean LeftReversed = true;
+    public static boolean RightReversed = true;
+    public static boolean FrontReversed = false;
+
+    public static int startHeading = 90;
+
+
 }
