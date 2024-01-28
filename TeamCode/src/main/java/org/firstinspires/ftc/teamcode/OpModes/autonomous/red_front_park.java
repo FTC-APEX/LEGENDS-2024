@@ -21,8 +21,8 @@ import org.firstinspires.ftc.teamcode.subsystems.slides;
 import org.firstinspires.ftc.teamcode.util.constantsAutonomous.redBack;
 import org.firstinspires.ftc.teamcode.utility.OpenCV;
 
-@Autonomous (name = "Red Back -- Parking Only")
-public class red_back_park extends LinearOpMode {
+@Autonomous (name = "Red Front -- Parking Only")
+public class red_front_park extends LinearOpMode {
     ElapsedTime runtime = new ElapsedTime();
 
     intake intake = new intake();
@@ -31,7 +31,7 @@ public class red_back_park extends LinearOpMode {
     SampleMecanumDrive drive;
     kamera kamera = new kamera();
 
-    Pose2d startPos = new Pose2d(-36, -60, Math.toRadians(startHeading));
+    Pose2d startPos = new Pose2d(12, -60, Math.toRadians(startHeading));
     OpenCV.Pipeline.position zone = OpenCV.Pipeline.position.UNKNOWN;
     int cycles = 0;
     boolean purple = false;
@@ -60,19 +60,14 @@ public class red_back_park extends LinearOpMode {
         TrajectorySequence SCORE_YELLOW;
 
 
-            PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-                    .lineToConstantHeading(new Vector2d(-36, -4))
-                    .build();
+        PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
+                .lineToConstantHeading(new Vector2d(-12, -54))
+                .build();
 
-            SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
-                    .setReversed(true)
-                    .lineToConstantHeading((new Vector2d(60,-15)))
-                    .setReversed(false)
-                    .build();
-
-        TrajectorySequence PARK_LEFT = drive.trajectorySequenceBuilder(SCORE_YELLOW.end())
-                .lineToConstantHeading(new Vector2d(48, -12))
-                .lineToConstantHeading(new Vector2d(84, -12))
+        SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
+                .setReversed(true)
+                .lineToConstantHeading((new Vector2d(36,-54)))
+                .setReversed(false)
                 .build();
 
 
