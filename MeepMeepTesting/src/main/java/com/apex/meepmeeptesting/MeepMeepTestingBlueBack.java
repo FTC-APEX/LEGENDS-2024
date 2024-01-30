@@ -22,25 +22,19 @@ public class MeepMeepTestingBlueBack {
                                 drive.trajectorySequenceBuilder(new Pose2d(-36, 60, Math.toRadians(-90)))
                                         //Initial Movement
 
-//                                        //Left
-//                                        .splineTo(new Vector2d(-46.5, 38), Math.toRadians(-90))
-//                                        .setReversed(true)
-//                                        .splineTo(new Vector2d(-24, 36), Math.toRadians(0))
-//                                        .splineTo(new Vector2d(48, 29), Math.toRadians(0))
-//                                        .setReversed(false)
-//                                        .waitSeconds(2)
-                                        //Center
-                                        .lineToConstantHeading(new Vector2d(-36, 34))
+                                        //Left
+                                        .splineTo(new Vector2d(-46.5, 38), Math.toRadians(-90))
                                         .setReversed(true)
                                         .splineTo(new Vector2d(-24, 36), Math.toRadians(0))
-                                        .lineToConstantHeading(new Vector2d(48, 36))
+                                        .lineToConstantHeading(new Vector2d(12, 36))
+                                        .splineTo(new Vector2d(48, 29), Math.toRadians(0))
                                         .setReversed(false)
                                         .waitSeconds(2)
-//                                        //Right
-//                                        .splineTo(new Vector2d(-24, 36), Math.toRadians(-90))
+//                                        //Center
+//                                        .lineToConstantHeading(new Vector2d(-36, -34))
 //                                        .setReversed(true)
-//                                        .splineTo(new Vector2d(-20, 36), Math.toRadians(0))
-//                                        .splineTo(new Vector2d(48, 43), Math.toRadians(0))
+//                                        .splineTo(new Vector2d(-24, -36), Math.toRadians(0))
+//                                        .lineToConstantHeading(new Vector2d(48, -36))
 //                                        .setReversed(false)
 //                                        .waitSeconds(2)
 

@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.subsystems.slides;
 import org.firstinspires.ftc.teamcode.util.constantsAutonomous.redBack;
 import org.firstinspires.ftc.teamcode.utility.OpenCV;
 
-@Autonomous (name = "Red Front -- Parking Only")
+@Autonomous (name = "Blue Front -- Parking Only")
 public class blue_front_park extends LinearOpMode {
     ElapsedTime runtime = new ElapsedTime();
 

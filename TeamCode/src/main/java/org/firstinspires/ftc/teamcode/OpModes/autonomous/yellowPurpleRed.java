@@ -83,7 +83,7 @@ public class yellowPurpleRed extends LinearOpMode {
             SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
                     .setReversed(true)
                     .splineTo(new Vector2d(-24, -36), Math.toRadians(0))
-                    .lineToConstantHeading((new Vector2d(0, -36)))
+                    .lineTo((new Vector2d(0, -36)))
                     .splineTo(new Vector2d(48, -36), Math.toRadians(0))
                     .setReversed(false)
                     .build();
@@ -121,8 +121,8 @@ public class yellowPurpleRed extends LinearOpMode {
         }
 
         TrajectorySequence PARK_LEFT = drive.trajectorySequenceBuilder(SCORE_YELLOW.end())
-                .lineToConstantHeading(new Vector2d(48, -12))
-                .lineToConstantHeading(new Vector2d(60, -60))
+                .lineToConstantHeading(new Vector2d(40, -12))
+                .lineToConstantHeading(new Vector2d(60, -12))
                 .build();
 
         TrajectorySequence PARK_RIGHT = drive.trajectorySequenceBuilder(SCORE_YELLOW.end())
@@ -161,7 +161,7 @@ public class yellowPurpleRed extends LinearOpMode {
                     }
                     break;
                 case PARK_LEFT:
-                    if (!drive.isBusy() && cycles == 2) {
+                    if (!drive.isBusy() && cycles == 0) {
                         drive.followTrajectorySequence(PARK_LEFT);
                         nextTraj(redBack.END);
                     }
