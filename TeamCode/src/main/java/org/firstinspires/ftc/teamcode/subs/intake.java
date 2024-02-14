@@ -23,19 +23,19 @@ public class intake {
     public void state(constants.intakeState state) {
         switch (state) {
             case SUCK:
-                intake.setDirection(DcMotorEx.Direction.FORWARD);
+                intake.setDirection(DcMotorEx.Direction.REVERSE);
                 intake.setPower(constants.intakeSpeed);
                 State = "Sucking In";
                 break;
 
             case SPIT:
-                intake.setDirection(DcMotorEx.Direction.REVERSE);
+                intake.setDirection(DcMotorEx.Direction.FORWARD);
                 intake.setPower(constants.intakeSpeed);
                 State = "Spitting Out";
                 break;
 
             case PURPLE:
-                intake.setDirection(DcMotorEx.Direction.REVERSE);
+                intake.setDirection(DcMotorEx.Direction.FORWARD);
                 intake.setPower(constants.purpleSpeed);
                 State = "Autonomous Purple";
                 break;

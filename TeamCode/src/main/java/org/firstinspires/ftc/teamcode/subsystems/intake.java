@@ -17,7 +17,7 @@ public class intake {
     public void init(HardwareMap hardwareMap) {
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         intake.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT); //Not sure whether BRAKE is needed yet, but change to BRAKE if needed
-        intake.setDirection(DcMotorEx.Direction.FORWARD); //Change to Reverse if Needed
+        //intake.setDirection(DcMotorEx.Direction.REVERSE); //Change to Reverse if Needed
 
         state = "INIT";
 
@@ -32,13 +32,13 @@ public class intake {
     public void setIntake(constantsRobot.intake intakeState) {
         switch (intakeState) {
             case SUCK:
-                intake.setDirection(DcMotorEx.Direction.FORWARD);
+                intake.setDirection(DcMotorEx.Direction.REVERSE);
                 intake.setPower(constantsRobot.STANDARD);
                 state = "SUCK";
                 break;
 
             case SPIT:
-                intake.setDirection(DcMotorEx.Direction.REVERSE);
+                intake.setDirection(DcMotorEx.Direction.FORWARD);
                 intake.setPower(constantsRobot.STANDARD);
                 state = "SPIT";
                 break;

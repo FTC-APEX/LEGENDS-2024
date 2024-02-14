@@ -66,7 +66,7 @@ public class red_back_park extends LinearOpMode {
 
             SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
                     .setReversed(true)
-                    .lineToConstantHeading((new Vector2d(60,-15)))
+                    .lineToConstantHeading((new Vector2d(60,-4)))
                     .setReversed(false)
                     .build();
 
