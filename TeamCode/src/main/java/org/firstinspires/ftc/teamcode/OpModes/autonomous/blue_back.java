@@ -18,6 +18,7 @@ import org.firstinspires.ftc.teamcode.subsystems.outtake;
 import org.firstinspires.ftc.teamcode.subsystems.slides;
 import org.firstinspires.ftc.teamcode.util.constantsAutonomous.redBack;
 import org.firstinspires.ftc.teamcode.util.OpenCV;
+import org.firstinspires.ftc.teamcode.util.constantsRobot;
 
 @Autonomous (name = "Blue Back Auto w/ Cam")
 public class blue_back extends LinearOpMode {
@@ -29,13 +30,13 @@ public class blue_back extends LinearOpMode {
     SampleMecanumDrive drive;
     kamera kamera = new kamera();
 
-    Pose2d startPos = new Pose2d(-36, 60, Math.toRadians(90));
+    Pose2d startPos = new Pose2d(15.625, -63.3125, Math.toRadians(90));
     OpenCV.Pipeline.position zone = OpenCV.Pipeline.position.UNKNOWN;
     int cycles = 0;
     boolean purple = false;
     boolean yellow = true;
-    redBack current = redBack.IDLE;
-    redBack next = redBack.PURPLE_CAM;
+    redBack current = redBack.IDLE; // IDLE
+    redBack next = redBack.PURPLE_CAM; // PURPLE_CAM
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -43,12 +44,21 @@ public class blue_back extends LinearOpMode {
 
         drive = new SampleMecanumDrive(hardwareMap);
 
+        kamera.init(hardwareMap);
+
+        outtake.init(hardwareMap);
+
+        slides.init(hardwareMap);
+
+        intake.init(hardwareMap);
+
         while (opModeInInit()) {
             drive.setPoseEstimate(startPos);
             zone = kamera.getZone();
             telemetry.addLine("AUTONOMOUS READY...");
             telemetry.addData("Parking Zone:", zone);
             telemetry.update();
+            outtake.closeBlocker();
         }
 
         waitForStart();
@@ -57,81 +67,52 @@ public class blue_back extends LinearOpMode {
 
         if (zone == OpenCV.Pipeline.position.LEFT) {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-                    .lineToConstantHeading(new Vector2d(-26, 48))
-                    .splineTo(new Vector2d(-40, 32), Math.toRadians(125))
-                    .build();
-
-            SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
-                    .setReversed(true)
-                    .splineTo(new Vector2d(-24, 36), Math.toRadians(0))
-                    .lineToConstantHeading((new Vector2d(0, 36)))
-                    .splineTo(new Vector2d(48, 30), Math.toRadians(0))
-                    .setReversed(false)
+//                    .lineToConstantHeading(new Vector2d(15.625, -33)) // y = -33 for jizz code
+//                    .turn(Math.toRadians(90))
+//                    .lineToConstantHeading(new Vector2d(14, -33))
+                    .lineToLinearHeading(new Pose2d(15.625, -28, Math.toRadians(180)))
+                    .lineToConstantHeading(new Vector2d(13, -28))
+                    .addTemporalMarker(2.5, () -> {
+                        intake.setIntake(constantsRobot.intake.SPIT);
+                    })
+                    .addTemporalMarker(2.545, () -> {
+                        intake.setIntake(constantsRobot.intake.OFF);
+                    })
+                    .waitSeconds(1)
                     .build();
         }
         else if(zone == OpenCV.Pipeline.position.CENTER) {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-                    .lineToConstantHeading(new Vector2d(-36, 34))
-                    .build();
-
-            SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
-                    .setReversed(true)
-                    .splineTo(new Vector2d(-24, 36), Math.toRadians(0))
-                    .lineToConstantHeading(new Vector2d(48, 36))
-                    //.lineToConstantHeading((new Vector2d(0, 36)))
-                    //.splineTo(new Vector2d(48, 36), Math.toRadians(0))
-                    .setReversed(false)
+//                    .lineToConstantHeading(new Vector2d(12, -36))
+                    .lineToConstantHeading(new Vector2d(10, -36))
+                    .addTemporalMarker(2.5, () -> {
+                        intake.setIntake(constantsRobot.intake.SPIT);
+                    })
+                    .addTemporalMarker(2.545, () -> {
+                        intake.setIntake(constantsRobot.intake.OFF);
+                    })
+                    .waitSeconds(1)
                     .build();
         }
         else if (zone == OpenCV.Pipeline.position.RIGHT) {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-                    .lineToConstantHeading(new Vector2d(-36, 48))
-                    .splineTo(new Vector2d(-32, 32), Math.toRadians(55))
-                    .build();
-
-            SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
-                    .setReversed(true)
-                    .splineTo(new Vector2d(-24, 36), Math.toRadians(0))
-                    .lineToConstantHeading((new Vector2d(0, 36)))
-                    .splineTo(new Vector2d(48, 42), Math.toRadians(0))
-                    .setReversed(false)
+                    .lineToLinearHeading(new Pose2d(40, -28, Math.toRadians(180)))
+                    .lineTo(new Vector2d(37, -28))
+                    .addTemporalMarker(2.5, () -> {
+                        intake.setIntake(constantsRobot.intake.SPIT);
+                    })
+                    .addTemporalMarker(2.545, () -> {
+                        intake.setIntake(constantsRobot.intake.OFF);
+                    })
+                    .waitSeconds(1)
                     .build();
         }
         else { //lucky 2
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-                    .lineToConstantHeading(new Vector2d(-36, 34))
-                    .build();
-
-            SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
-                    .setReversed(true)
-                    .splineTo(new Vector2d(-24, 36), Math.toRadians(0))
-                    .lineToConstantHeading((new Vector2d(0, 36)))
-                    .splineTo(new Vector2d(48, 36), Math.toRadians(0))
-                    .setReversed(false)
+                    .lineToConstantHeading(new Vector2d(12, -34))
+                    .waitSeconds(2)
                     .build();
         }
-
-
-
-        TrajectorySequence TO_STACK = drive.trajectorySequenceBuilder(SCORE_YELLOW.end())
-                .splineTo(new Vector2d(0, 12), Math.toRadians(180))
-                .lineToConstantHeading(new Vector2d(-60, 12))
-                .build();
-
-        TrajectorySequence TO_BACKBOARD = drive.trajectorySequenceBuilder(TO_STACK.end())
-                .lineToConstantHeading(new Vector2d(0, 12))
-                .splineTo(new Vector2d(48, 36), Math.toRadians(0))
-                .build();
-
-        TrajectorySequence PARK_LEFT = drive.trajectorySequenceBuilder(TO_BACKBOARD.end())
-                .lineToConstantHeading(new Vector2d(48, 12))
-                .lineToConstantHeading(new Vector2d(60, 60))
-                .build();
-
-        TrajectorySequence PARK_RIGHT = drive.trajectorySequenceBuilder(TO_BACKBOARD.end())
-                .lineToConstantHeading(new Vector2d(48, 60))
-                .lineToConstantHeading(new Vector2d(60, 60))
-                .build();
 
         while (!isStopRequested() && opModeIsActive()) {
             telemetry.addData("Zone: ", zone);
@@ -155,37 +136,6 @@ public class blue_back extends LinearOpMode {
                 case PURPLE_CAM:
                     if (!drive.isBusy()) {
                         drive.followTrajectorySequence(PURPLE_CAM);
-                        nextTraj(redBack.SCORE_YELLOW);
-                    }
-                    break;
-                case SCORE_YELLOW:
-                    if (!drive.isBusy()) {
-                        drive.followTrajectorySequence(SCORE_YELLOW);
-                        nextTraj(redBack.TO_STACK);
-                    }
-                    break;
-                case TO_STACK:
-                    if (!drive.isBusy()) {
-                        drive.followTrajectorySequence(TO_STACK);
-                        nextTraj(redBack.TO_BACKBOARD);
-                    }
-                    break;
-                case TO_BACKBOARD:
-                    if (!drive.isBusy()) {
-                        drive.followTrajectorySequence(TO_BACKBOARD);
-                        cycles++;
-                        nextTraj(redBack.PARK_LEFT);
-                    }
-                    break;
-                case PARK_LEFT:
-                    if (!drive.isBusy() && cycles == 2) {
-                        drive.followTrajectorySequence(PARK_LEFT);
-                        nextTraj(redBack.END);
-                    }
-                    break;
-                case PARK_RIGHT:
-                    if (!drive.isBusy() && cycles == 2) {
-                        drive.followTrajectorySequence(PARK_RIGHT);
                         nextTraj(redBack.END);
                     }
                     break;
@@ -197,8 +147,6 @@ public class blue_back extends LinearOpMode {
 
             }
         }
-
-
 
     }
 

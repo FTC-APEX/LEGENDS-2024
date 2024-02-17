@@ -16,10 +16,13 @@ import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySe
 import org.firstinspires.ftc.teamcode.roadrunner.util.PoseStorage;
 import org.firstinspires.ftc.teamcode.subs.kamera;
 import org.firstinspires.ftc.teamcode.subsystems.intake;
+import org.firstinspires.ftc.teamcode.subsystems.kameraBLUE;
 import org.firstinspires.ftc.teamcode.subsystems.outtake;
 import org.firstinspires.ftc.teamcode.subsystems.slides;
+import org.firstinspires.ftc.teamcode.util.OpenCVBLUE;
 import org.firstinspires.ftc.teamcode.util.constantsAutonomous.redBack;
 import org.firstinspires.ftc.teamcode.util.OpenCV;
+import org.firstinspires.ftc.teamcode.util.constantsRobot;
 
 @Autonomous (name = "Red Back Auto w/ Cam")
 public class red_back extends LinearOpMode {
@@ -29,15 +32,15 @@ public class red_back extends LinearOpMode {
     outtake outtake = new outtake();
     slides slides = new slides();
     SampleMecanumDrive drive;
-    kamera kamera = new kamera();
+    kameraBLUE kamera = new kameraBLUE();
 
-    Pose2d startPos = new Pose2d(-36, -60, Math.toRadians(startHeading));
-    OpenCV.Pipeline.position zone = OpenCV.Pipeline.position.UNKNOWN;
+    Pose2d startPos = new Pose2d(-15.625, -63.3125, Math.toRadians(90));
+    OpenCVBLUE.Pipeline.position zone = OpenCVBLUE.Pipeline.position.UNKNOWN;
     int cycles = 0;
     boolean purple = false;
     boolean yellow = true;
-    redBack current = redBack.IDLE;
-    redBack next = redBack.PURPLE_CAM;
+    redBack current = redBack.IDLE; // IDLE
+    redBack next = redBack.PURPLE_CAM; // PURPLE_CAM
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -45,7 +48,13 @@ public class red_back extends LinearOpMode {
 
         drive = new SampleMecanumDrive(hardwareMap);
 
+        kamera.init(hardwareMap);
+
         outtake.init(hardwareMap);
+
+        slides.init(hardwareMap);
+
+        intake.init(hardwareMap);
 
         while (opModeInInit()) {
             drive.setPoseEstimate(startPos);
@@ -53,89 +62,54 @@ public class red_back extends LinearOpMode {
             telemetry.addLine("AUTONOMOUS READY...");
             telemetry.addData("Parking Zone:", zone);
             telemetry.update();
+            outtake.closeBlocker();
         }
 
         waitForStart();
         TrajectorySequence PURPLE_CAM;
-        TrajectorySequence SCORE_YELLOW;
 
-        if (zone == OpenCV.Pipeline.position.LEFT) {
+        if (zone == OpenCVBLUE.Pipeline.position.LEFT) {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-                    .lineToConstantHeading(new Vector2d(-26, -48))
-                    .splineTo(new Vector2d(-40, -32), Math.toRadians(125))
+                    .lineToLinearHeading(new Pose2d(40, 28, Math.toRadians(180)))
+                    .lineTo(new Vector2d(37, 28))
+                    .addTemporalMarker(2.5, () -> {
+                        intake.setIntake(constantsRobot.intake.SPIT);
+                    })
+                    .addTemporalMarker(2.545, () -> {
+                        intake.setIntake(constantsRobot.intake.OFF);
+                    })
+                    .waitSeconds(1)
                     .build();
-
-            SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
-                    .setReversed(true)
-                    .splineTo(new Vector2d(-24, -36), Math.toRadians(0))
-                    .lineToConstantHeading((new Vector2d(0, -36)))
-                    .splineTo(new Vector2d(48, -30), Math.toRadians(0))
-                    .setReversed(false)
+        } else if (zone == OpenCVBLUE.Pipeline.position.CENTER) {
+            PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
+//                    .lineToConstantHeading(new Vector2d(12, -36))
+                    .lineToConstantHeading(new Vector2d(8, 36))
+                    .addTemporalMarker(2.5, () -> {
+                        intake.setIntake(constantsRobot.intake.SPIT);
+                    })
+                    .addTemporalMarker(2.545, () -> {
+                        intake.setIntake(constantsRobot.intake.OFF);
+                    })
+                    .waitSeconds(1)
+                    .build();
+        } else if (zone == OpenCVBLUE.Pipeline.position.RIGHT) {
+            PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
+                    .lineToLinearHeading(new Pose2d(15.625, 28, Math.toRadians(180)))
+                    .lineToConstantHeading(new Vector2d(13, 28))
+                    .addTemporalMarker(2.5, () -> {
+                        intake.setIntake(constantsRobot.intake.SPIT);
+                    })
+                    .addTemporalMarker(2.545, () -> {
+                        intake.setIntake(constantsRobot.intake.OFF);
+                    })
+                    .waitSeconds(1)
+                    .build();
+        } else { //lucky 2
+            PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
+                    .lineToConstantHeading(new Vector2d(12, 34))
+                    .waitSeconds(2)
                     .build();
         }
-        else if(zone == OpenCV.Pipeline.position.CENTER) {
-            PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-                    .lineToConstantHeading(new Vector2d(-36, -34))
-                    .build();
-
-            SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
-                .setReversed(true)
-                .splineTo(new Vector2d(-24, -36), Math.toRadians(0))
-                    .lineToConstantHeading((new Vector2d(48, -36)))
-                    //.lineToConstantHeading((new Vector2d(0, -36)))
-                //.splineTo(new Vector2d(48, -36), Math.toRadians(0))
-                .setReversed(false)
-                .build();
-        }
-        else if (zone == OpenCV.Pipeline.position.RIGHT) {
-            PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-                    .lineToConstantHeading(new Vector2d(-36, -48))
-                    .splineTo(new Vector2d(-32, -32), Math.toRadians(55))
-                    .build();
-
-            SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
-                    .setReversed(true)
-                    .splineTo(new Vector2d(-24, -36), Math.toRadians(0))
-                    .lineToConstantHeading((new Vector2d(0, -36)))
-                    .splineTo(new Vector2d(48, -42), Math.toRadians(0))
-                    .setReversed(false)
-                    .build();
-        }
-        else { //lucky 2
-            PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-                    .lineToConstantHeading(new Vector2d(-36, -34))
-                    .build();
-
-            SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
-                .setReversed(true)
-                .splineTo(new Vector2d(-24, -36), Math.toRadians(0))
-                .lineToConstantHeading((new Vector2d(0, -36)))
-                .splineTo(new Vector2d(48, -36), Math.toRadians(0))
-                .setReversed(false)
-                .build();
-        }
-
-
-
-        TrajectorySequence TO_STACK = drive.trajectorySequenceBuilder(SCORE_YELLOW.end())
-                .splineTo(new Vector2d(0, -12), Math.toRadians(180))
-                .lineToConstantHeading(new Vector2d(-60, -12))
-                .build();
-
-        TrajectorySequence TO_BACKBOARD = drive.trajectorySequenceBuilder(TO_STACK.end())
-                .lineToConstantHeading(new Vector2d(0, -12))
-                .splineTo(new Vector2d(48, -36), Math.toRadians(0))
-                .build();
-
-        TrajectorySequence PARK_LEFT = drive.trajectorySequenceBuilder(TO_BACKBOARD.end())
-                .lineToConstantHeading(new Vector2d(48, -12))
-                .lineToConstantHeading(new Vector2d(60, -60))
-                .build();
-
-        TrajectorySequence PARK_RIGHT = drive.trajectorySequenceBuilder(TO_BACKBOARD.end())
-                .lineToConstantHeading(new Vector2d(48, -60))
-                .lineToConstantHeading(new Vector2d(60, -60))
-                .build();
 
 
         while (!isStopRequested() && opModeIsActive()) {
@@ -161,37 +135,6 @@ public class red_back extends LinearOpMode {
                     if (!drive.isBusy()) {
                         drive.followTrajectorySequence(PURPLE_CAM);
                         nextTraj(redBack.SCORE_YELLOW);
-                    }
-                    break;
-                case SCORE_YELLOW:
-                    if (!drive.isBusy()) {
-                        drive.followTrajectorySequence(SCORE_YELLOW);
-                        nextTraj(redBack.TO_STACK);
-                    }
-                    break;
-                case TO_STACK:
-                    if (!drive.isBusy()) {
-                        drive.followTrajectorySequence(TO_STACK);
-                        nextTraj(redBack.TO_BACKBOARD);
-                    }
-                    break;
-                case TO_BACKBOARD:
-                    if (!drive.isBusy()) {
-                        drive.followTrajectorySequence(TO_BACKBOARD);
-                        cycles++;
-                        nextTraj(redBack.PARK_LEFT);
-                    }
-                    break;
-                case PARK_LEFT:
-                    if (!drive.isBusy() && cycles == 2) {
-                        drive.followTrajectorySequence(PARK_LEFT);
-                        nextTraj(redBack.END);
-                    }
-                    break;
-                case PARK_RIGHT:
-                    if (!drive.isBusy() && cycles == 2) {
-                        drive.followTrajectorySequence(PARK_RIGHT);
-                        nextTraj(redBack.END);
                     }
                     break;
                 case END:

@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.util.constantsAutonomous.redBack;
 import org.firstinspires.ftc.teamcode.util.OpenCV;
 import org.firstinspires.ftc.teamcode.util.constantsRobot;
 
-@Autonomous (name = "Red Front Auto w/ Cam")
+@Autonomous (name = "Red Front Auto w/ Cycles")
 public class red_front extends LinearOpMode {
     ElapsedTime runtime = new ElapsedTime();
 
@@ -105,7 +105,7 @@ public class red_front extends LinearOpMode {
         else if(zone == OpenCV.Pipeline.position.CENTER) {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
 //                    .lineToConstantHeading(new Vector2d(12, -36))
-                    .lineToConstantHeading(new Vector2d(8, -36))
+                    .lineToConstantHeading(new Vector2d(10, -36))
                     .addTemporalMarker(2.5, () -> {
                         intake.setIntake(constantsRobot.intake.SPIT);
                     })
@@ -126,10 +126,10 @@ public class red_front extends LinearOpMode {
                     .addDisplacementMarker(0.5, () -> {
                         slides.preset(constantsRobot.slides.FIRST);
                     })
-                    .addDisplacementMarker(6, () -> {
+                    .addTemporalMarker(1.5, ()-> {
                         outtake.setState(constantsRobot.outtake.AIM);
                     })
-                    .addTemporalMarker(3.5, ()-> {
+                    .addTemporalMarker(2.25, ()-> {
                         outtake.openBlocker();
                     })
                     .waitSeconds(2)
