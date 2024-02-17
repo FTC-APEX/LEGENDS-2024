@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.subsystems.intake;
 import org.firstinspires.ftc.teamcode.subsystems.outtake;
 import org.firstinspires.ftc.teamcode.subsystems.slides;
 import org.firstinspires.ftc.teamcode.util.constantsAutonomous.redBack;
-import org.firstinspires.ftc.teamcode.utility.OpenCV;
+import org.firstinspires.ftc.teamcode.util.OpenCV;
 
 @Autonomous (name = "Blue Front -- Parking Only")
 public class blue_front_park extends LinearOpMode {

@@ -5,6 +5,7 @@ public class constantsAutonomous {
         PURPLE_CAM,
         SCORE_YELLOW,
         TO_STACK, // BOOK IT
+        BURST,
         TO_BACKBOARD,
         STRAFE_TO_BACKDROP_INLINE,
         CYCLE_SCORE,
@@ -15,7 +16,9 @@ public class constantsAutonomous {
         PURPLE_CAM,
         SCORE_YELLOW,
         TO_STACK, // BOOK IT
+        BURST,
         TO_BACKBOARD,
+        RESET,
         PARK_LEFT,
         PARK_RIGHT,
         END

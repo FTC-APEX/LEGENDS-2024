@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -48,6 +49,12 @@ public class intake {
                 state = "OFF";
                 break;
 
+            case CONTROLLED:
+                intake.setDirection(DcMotorSimple.Direction.FORWARD);
+                intake.setPower(0.7);
+                state = "AUTO -- CONTROL";
+                break;
+
             default:
                 setIntake(constantsRobot.intake.OFF);
                 state = "DEFAULT --> OFF (SOMETHING WENT WRONG IN INIT)";
@@ -62,18 +69,18 @@ public class intake {
                 position = "GROUND";
                 break;
 
-            case TWO:
-                pivot.setPosition(constantsRobot.TWO);
+            case ONE:
+                pivot.setPosition(constantsRobot.ONE);
                 position = "TWO PIXELS";
                 break;
 
-            case FOUR:
-                pivot.setPosition(constantsRobot.FOUR);
+            case THREE:
+                pivot.setPosition(constantsRobot.THREE);
                 position = "FOUR PIXELS";
                 break;
 
-            case SIX:
-                pivot.setPosition(constantsRobot.SIX);
+            case FIVE:
+                pivot.setPosition(constantsRobot.FIVE);
                 position = "SIX PIXELS";
                 break;
 

@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.drive.MecanumDrive;
 import com.acmerobotics.roadrunner.followers.HolonomicPIDVAFollower;
 import com.acmerobotics.roadrunner.followers.TrajectoryFollower;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.localization.ThreeTrackingWheelLocalizer;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
@@ -49,6 +50,8 @@ import static org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.enc
 import static org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.kA;
 import static org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.kStatic;
 import static org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.kV;
+
+import android.text.style.TabStopSpan;
 
 /*
  * Simple mecanum drive hardware implementation for REV hardware.
@@ -107,8 +110,6 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        //rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        //rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
@@ -129,6 +130,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: reverse any motors using DcMotor.setDirection()
+
         // TODO: if desired, use setLocalizer() to change the localization method
         setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
 
@@ -284,7 +286,6 @@ public class SampleMecanumDrive extends MecanumDrive {
         //return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         return 0;
     }
-
 
     @Override
     public Double getExternalHeadingVelocity() {

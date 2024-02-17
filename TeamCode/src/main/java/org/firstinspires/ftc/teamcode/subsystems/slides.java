@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.util.constantsRobot;
@@ -25,9 +27,12 @@ public class slides {
 
         left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        left.setDirection(DcMotorSimple.Direction.REVERSE);
+        right.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    public void preset(constants.slides preset){
+    public void preset(constantsRobot.slides preset){
         switch (preset) {
             case READY:
                 setHeight(constantsRobot.READY);
@@ -54,9 +59,6 @@ public class slides {
                 State = "Fully Extended";
                 break;
 
-            case CUSTOM:
-                State = "Custom Slide Height - refer to next line";
-                break;
         }
     }
 
@@ -70,8 +72,8 @@ public class slides {
         }
 
         if (currentHeight > target) {
-            leftPower = -0.4;
-            rightPower = -0.4;
+            leftPower = -0.6;
+            rightPower = -0.6;
         }
 
         left.setTargetPosition(this.target);

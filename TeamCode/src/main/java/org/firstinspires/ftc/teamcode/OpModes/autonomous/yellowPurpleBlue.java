@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.subsystems.outtake;
 import org.firstinspires.ftc.teamcode.subsystems.slides;
 import org.firstinspires.ftc.teamcode.util.constantsAutonomous.redBack;
 import org.firstinspires.ftc.teamcode.util.constantsRobot;
-import org.firstinspires.ftc.teamcode.utility.OpenCV;
+import org.firstinspires.ftc.teamcode.util.OpenCV;
 import org.firstinspires.ftc.teamcode.utility.constants;
 
 @Autonomous (name = "Broken Blue -- Park Auto")

@@ -23,12 +23,12 @@ public class outtake {
         state = "INIT";
         isBlocking = false;
         setState(constantsRobot.outtake.READY);
+        closeBlocker();
     }
 
     public void setState(constantsRobot.outtake outtakeState) {
         switch(outtakeState) {
             case READY:
-//                blocker.setPosition(constantsRobot.BLOCKER_OPEN);
                 pivotA.setPosition(constantsRobot.PIVOT_A_READY);
                 pivotB.setPosition(constantsRobot.PIVOT_B_READY);
 
@@ -37,7 +37,6 @@ public class outtake {
                 break;
 
             case MOVING:
-//                blocker.setPosition(constantsRobot.BLOCKER_CLOSED);
                 pivotA.setPosition(constantsRobot.PIVOT_A_READY);
                 pivotB.setPosition(constantsRobot.PIVOT_B_READY);
 
@@ -46,7 +45,6 @@ public class outtake {
                 break;
 
             case AIM:
-//                blocker.setPosition(constantsRobot.BLOCKER_CLOSED);
                 pivotA.setPosition(constantsRobot.PIVOT_A_SCORE);
                 pivotB.setPosition(constantsRobot.PIVOT_B_SCORE);
 
@@ -55,7 +53,6 @@ public class outtake {
                 break;
 
             case SCORE:
-//                blocker.setPosition(constantsRobot.BLOCKER_OPEN);
                 pivotA.setPosition(constantsRobot.PIVOT_A_SCORE);
                 pivotB.setPosition(constantsRobot.PIVOT_B_SCORE);
 

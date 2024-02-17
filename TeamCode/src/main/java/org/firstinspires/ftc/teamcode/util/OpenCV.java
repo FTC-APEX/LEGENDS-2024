@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.utility;
+package org.firstinspires.ftc.teamcode.util;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -31,12 +31,12 @@ public class OpenCV {
 
         //Regions for detection
         //Region Anchors
-        static final Point anchorLeft = new Point(80, 300);
-        static final Point anchorCenter = new Point(440, 300);
-        static final Point anchorRight = new Point(840, 300);
-        static final int widthL = 360;
+        static final Point anchorLeft = new Point(0, 300);
+        static final Point anchorCenter = new Point(175, 300);
+        static final Point anchorRight = new Point(900, 300);
+        static final int widthL = 175;
         static final int heightL = 300;
-        static final int widthC = 400;
+        static final int widthC = 725;
         static final int heightC = 200;
         static final int widthR = 360;
         static final int heightR = 300;
@@ -89,9 +89,9 @@ public class OpenCV {
         }
 
 
-        public void init(Mat frame1, Mat frame2) {
+        public void init(Mat frame1) {
             inputToCr(frame1);
-            inputToCb(frame2);
+            inputToCb(frame1);
 
             crL = Cr.submat(new Rect(leftA, leftB));
             crC = Cr.submat(new Rect(centerA, centerB));
@@ -110,6 +110,8 @@ public class OpenCV {
             avgLR = (int) Core.mean(crL).val[0];
             avgCR = (int) Core.mean(crC).val[0];
             avgRR = (int) Core.mean(crR).val[0];
+
+            inputToCb(frame);
 
             avgLB = (int) Core.mean(cbL).val[0];
             avgCB = (int) Core.mean(cbC).val[0];

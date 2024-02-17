@@ -16,10 +16,10 @@ public class constantsRobot {
     public static double kg;
 
     public static int READY = 0;
-    public static int LINE1 = 1500;
-    public static int LINE2 = 2000;
-    public static int LINE3 = 2500;
-    public static int FULL  = 3000;
+    public static int LINE1 = 1000;
+    public static int LINE2 = 1500;
+    public static int LINE3 = 2250;
+    public static int FULL  = 2800;
     public static int HANG /* = 3.5*/;
 
     public enum slides{
@@ -28,7 +28,8 @@ public class constantsRobot {
         SECOND,
         THIRD,
         FULL,
-        HANG
+        HANG,
+        CUSTOM
     }
 
     //Intake Constants
@@ -39,20 +40,21 @@ public class constantsRobot {
     public enum intake {
         SUCK,
         SPIT,
+        CONTROLLED,
         OFF
     }
 
     public static double GROUND = 0;
-    public static double TWO = 0.1;
-    public static double FOUR = 0.2;
-    public static double SIX = 0.3;
+    public static double ONE = 0.1;
+    public static double THREE = 0.2;
+    public static double FIVE = 0.3;
     public static double RETRACTED = 1;
 
     public enum pivot {
         GROUND, // .5 pixel height
-        TWO, // 1.5 pixel height
-        FOUR, // 3.5 pixel height
-        SIX, // 5.5 pixel height
+        ONE, // 1.5 pixel height
+        THREE, // 3.5 pixel height
+        FIVE, // 5.5 pixel height
         RETRACTED
     }
 
@@ -68,19 +70,19 @@ public class constantsRobot {
     public static double BLOCKER_OPEN = 0.5;
     public static double BLOCKER_CLOSED = 0.9;
 
-    public static double PIVOT_A_READY = 0.2;
-    public static double PIVOT_B_READY = 0.8;
+    public static double PIVOT_A_READY = 0.50;
+    public static double PIVOT_B_READY = 0.50;
 
-    public static double PIVOT_A_SCORE = 0.65;
-    public static double PIVOT_B_SCORE = 0.35;
+    public static double PIVOT_A_SCORE = 0;
+    public static double PIVOT_B_SCORE = 1;
 
     //shooter constants
     public static double SHOOTER_READY = 0;
     public static double SHOOTER_SHOT = 1;
 
     public static boolean LeftReversed = true;
-    public static boolean RightReversed = false;
-    public static boolean FrontReversed = false;
+    public static boolean RightReversed = true;
+    public static boolean FrontReversed = true;
 
     public static int startHeading = 90;
 

@@ -17,7 +17,8 @@ import org.firstinspires.ftc.teamcode.subsystems.intake;
 import org.firstinspires.ftc.teamcode.subsystems.outtake;
 import org.firstinspires.ftc.teamcode.subsystems.slides;
 import org.firstinspires.ftc.teamcode.util.constantsAutonomous.redBack;
-import org.firstinspires.ftc.teamcode.utility.OpenCV;
+import org.firstinspires.ftc.teamcode.util.OpenCV;
+import org.firstinspires.ftc.teamcode.util.constantsRobot;
 
 @Autonomous (name = "Blue Front Auto w/ Cam")
 public class blue_front extends LinearOpMode {
@@ -29,13 +30,13 @@ public class blue_front extends LinearOpMode {
     SampleMecanumDrive drive;
     kamera kamera = new kamera();
 
-    Pose2d startPos = new Pose2d(12, 60, Math.toRadians(90));
+    Pose2d startPos = new Pose2d(15.625, 63.3125, Math.toRadians(90));
     OpenCV.Pipeline.position zone = OpenCV.Pipeline.position.UNKNOWN;
     int cycles = 0;
     boolean purple = false;
     boolean yellow = true;
-    redBack current = redBack.IDLE;
-    redBack next = redBack.PURPLE_CAM;
+    redBack current = redBack.IDLE; // IDLE
+    redBack next = redBack.PURPLE_CAM; // PURPLE_CAM
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -43,12 +44,21 @@ public class blue_front extends LinearOpMode {
 
         drive = new SampleMecanumDrive(hardwareMap);
 
+        kamera.init(hardwareMap);
+
+        outtake.init(hardwareMap);
+
+        slides.init(hardwareMap);
+
+        intake.init(hardwareMap);
+
         while (opModeInInit()) {
             drive.setPoseEstimate(startPos);
             zone = kamera.getZone();
             telemetry.addLine("AUTONOMOUS READY...");
             telemetry.addData("Parking Zone:", zone);
             telemetry.update();
+            outtake.closeBlocker();
         }
 
         waitForStart();
@@ -57,73 +67,209 @@ public class blue_front extends LinearOpMode {
 
         if (zone == OpenCV.Pipeline.position.LEFT) {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-                    .lineToConstantHeading(new Vector2d(36, 48))
-                    .splineTo(new Vector2d(-40, 32), Math.toRadians(125))
+//                    .lineToConstantHeading(new Vector2d(15.625, -33)) // y = -33 for jizz code
+//                    .turn(Math.toRadians(90))
+//                    .lineToConstantHeading(new Vector2d(14, -33))
+                    .lineToConstantHeading(new Vector2d(15.625, 48))
+                    .splineTo(new Vector2d(13.5, 30), Math.toRadians(180))
+                    .addTemporalMarker(2.5, () -> {
+                        intake.setIntake(constantsRobot.intake.SPIT);
+                    })
+                    .addTemporalMarker(2.515, () -> {
+                        intake.setIntake(constantsRobot.intake.OFF);
+                    })
+                    .waitSeconds(1)
                     .build();
 
             SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
                     .setReversed(true)
-                    .splineTo(new Vector2d(-24, 36), Math.toRadians(0))
-                    .lineToConstantHeading((new Vector2d(0, 36)))
-                    .splineTo(new Vector2d(48, 30), Math.toRadians(0))
+//                    .lineToConstantHeading(new Vector2d(24, -33))
+//                    .splineTo(new Vector2d(53, -27), Math.toRadians(0))
+                    .lineToConstantHeading(new Vector2d(56.5, 27))
                     .setReversed(false)
+                    .addTemporalMarker(1, () -> {
+                        intake.setIntake(constantsRobot.intake.OFF);
+                    })
+                    .addDisplacementMarker(0.5, () -> {
+                        slides.preset(constantsRobot.slides.FIRST);
+                    })
+                    .addTemporalMarker(1.5, () -> {
+                        outtake.setState(constantsRobot.outtake.AIM);
+                    })
+                    .addTemporalMarker(2.25, ()-> {
+                        outtake.openBlocker();
+                    })
+                    .waitSeconds(1)
                     .build();
         }
         else if(zone == OpenCV.Pipeline.position.CENTER) {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-                    .lineToConstantHeading(new Vector2d(12, 34))
+//                    .lineToConstantHeading(new Vector2d(12, -36))
+                    .lineToConstantHeading(new Vector2d(8, 36))
+                    .addTemporalMarker(2.5, () -> {
+                        intake.setIntake(constantsRobot.intake.SPIT);
+                    })
+                    .addTemporalMarker(2.545, () -> {
+                        intake.setIntake(constantsRobot.intake.OFF);
+                    })
+                    .waitSeconds(1)
                     .build();
 
             SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
                     .setReversed(true)
-                    .splineTo(new Vector2d(24, 36), Math.toRadians(0))
-                    .lineToConstantHeading((new Vector2d(48, 36)))
+                    .lineToLinearHeading(new Pose2d(24, 38, Math.toRadians(180)))
+                    .lineToConstantHeading((new Vector2d(56.5, 33)))
                     .setReversed(false)
+                    .addTemporalMarker(0, () -> {
+                        intake.setIntake(constantsRobot.intake.OFF);
+                    })
+                    .addDisplacementMarker(0.5, () -> {
+                        slides.preset(constantsRobot.slides.FIRST);
+                    })
+                    .addDisplacementMarker(6, () -> {
+                        outtake.setState(constantsRobot.outtake.AIM);
+                    })
+                    .addTemporalMarker(3.5, ()-> {
+                        outtake.openBlocker();
+                    })
+                    .waitSeconds(2)
                     .build();
         }
         else if (zone == OpenCV.Pipeline.position.RIGHT) {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-                    .lineToConstantHeading(new Vector2d(-36, 48))
-                    .splineTo(new Vector2d(-32, 32), Math.toRadians(55))
+                    .lineToLinearHeading(new Pose2d(40, 28, Math.toRadians(180)))
+                    .lineTo(new Vector2d(37, 28))
+                    .addTemporalMarker(2.5, () -> {
+                        intake.setIntake(constantsRobot.intake.SPIT);
+                    })
+                    .addTemporalMarker(2.52, () -> {
+                        intake.setIntake(constantsRobot.intake.OFF);
+                    })
+                    .waitSeconds(1)
                     .build();
 
             SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
                     .setReversed(true)
-                    .splineTo(new Vector2d(-24, 36), Math.toRadians(0))
-                    .lineToConstantHeading((new Vector2d(0, 36)))
-                    .splineTo(new Vector2d(48, 42), Math.toRadians(0))
+                    .splineTo(new Vector2d(56.5, 39), Math.toRadians(0))
                     .setReversed(false)
+                    .addTemporalMarker(0, () -> {
+                        intake.setIntake(constantsRobot.intake.OFF);
+                    })
+                    .addDisplacementMarker(0.5, () -> {
+                        slides.preset(constantsRobot.slides.FIRST);
+                    })
+                    .addTemporalMarker(1, () -> {
+                        outtake.setState(constantsRobot.outtake.AIM);
+                    })
+                    .addTemporalMarker(2.75, ()-> {
+                        outtake.openBlocker();
+                    })
+                    .waitSeconds(2)
                     .build();
         }
         else { //lucky 2
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-                    .lineToConstantHeading(new Vector2d(-36, 34))
+                    .lineToConstantHeading(new Vector2d(12, 34))
+                    .waitSeconds(2)
                     .build();
 
             SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
                     .setReversed(true)
-                    .splineTo(new Vector2d(-24, 36), Math.toRadians(0))
-                    .lineToConstantHeading((new Vector2d(0, 36)))
-                    .splineTo(new Vector2d(48, 36), Math.toRadians(0))
+                    .splineTo(new Vector2d(24, 33), Math.toRadians(0))
+                    .lineToConstantHeading((new Vector2d(58, 33)))
                     .setReversed(false)
+//                    .addSpatialMarker(new Vector2d(36, -36), () -> {
+//                        slides.preset(constantsRobot.slides.FIRST);
+//                    })
+//                    .addSpatialMarker(new Vector2d(48, -36), () -> {
+//                        outtake.setState(constantsRobot.outtake.AIM);
+//                    })
+//                    .addSpatialMarker(new Vector2d(58, -27), () -> {
+//                        outtake.openBlocker();
+//                    })
                     .build();
         }
 
 
 
         TrajectorySequence TO_STACK = drive.trajectorySequenceBuilder(SCORE_YELLOW.end())
-                .splineTo(new Vector2d(0, 12), Math.toRadians(180))
-                .lineToConstantHeading(new Vector2d(-60, 12))
+                .splineTo(new Vector2d(18, 10), Math.toRadians(180))
+                .splineTo(new Vector2d(-55, 16), Math.toRadians(180)) // add -48 to the x value (currently at 5 tile length for testing
+                .addDisplacementMarker(0.5, () -> {
+                    outtake.setState(constantsRobot.outtake.READY);
+                    outtake.openBlocker();
+                    slides.preset(constantsRobot.slides.READY);
+                    //intake.setIntake(constantsRobot.intake.SUCK);
+                })
                 .build();
 
-        TrajectorySequence TO_BACKBOARD = drive.trajectorySequenceBuilder(TO_STACK.end())
-                .lineToConstantHeading(new Vector2d(0, 12))
-                .splineTo(new Vector2d(48, 36), Math.toRadians(0))
+        TrajectorySequence BURST = drive.trajectorySequenceBuilder(TO_STACK.end())
+                .waitSeconds(1.5)
+                .lineToConstantHeading(new Vector2d(-50, 12))// add -24 to the x value (currently at 5 tile length for testing
+                .lineToConstantHeading(new Vector2d(-56, 12))// add -24 to the x value (currently at 5 tile length for testing
+                .waitSeconds(1)
+                .lineToConstantHeading(new Vector2d(-50, 12))// add -24 to the x value (currently at 5 tile length for testing
+                .lineToConstantHeading(new Vector2d(-56, 12))// add -24 to the x value (currently at 5 tile length for testing
+                .waitSeconds(1)
+                .addTemporalMarker(0.5, () -> {
+                    intake.setIntake(constantsRobot.intake.CONTROLLED);
+                })
+                .addTemporalMarker(0.8, () -> {
+                    intake.setIntake(constantsRobot.intake.OFF);
+                })
+                .addTemporalMarker(1, () -> {
+                    intake.setIntake(constantsRobot.intake.CONTROLLED);
+                })
+                .addTemporalMarker(1.3, () -> {
+                    intake.setIntake(constantsRobot.intake.OFF);
+                })
+                .addTemporalMarker(1.5, () -> {
+                    intake.setIntake(constantsRobot.intake.SUCK);
+                })
+                .addTemporalMarker(2.4, () -> {
+                    intake.setIntake(constantsRobot.intake.SPIT);
+                })
+                .addTemporalMarker(2.6, () -> {
+                    intake.setIntake(constantsRobot.intake.SUCK);
+                })
+                .build();
+
+        TrajectorySequence TO_BACKBOARD = drive.trajectorySequenceBuilder(BURST.end())
+                .lineToConstantHeading(new Vector2d(18, 12))
+                .splineTo(new Vector2d(53, 42), Math.toRadians(0))
+                .addTemporalMarker(0, () -> {
+                    intake.setIntake(constantsRobot.intake.SPIT);
+                    outtake.closeBlocker();
+                })
+                .addTemporalMarker(3, () -> {
+                    intake.setIntake(constantsRobot.intake.OFF);
+                    slides.preset(constantsRobot.slides.SECOND);
+                })
+                .addTemporalMarker(4, () -> {
+                    outtake.setState(constantsRobot.outtake.AIM);
+                })
+                .addTemporalMarker(4.5, ()-> {
+                    outtake.openBlocker();
+                })
+                .waitSeconds(2)
+                .build();
+
+        TrajectorySequence RESET = drive.trajectorySequenceBuilder(TO_BACKBOARD.end())
+                .addTemporalMarker(0, () -> {
+                    outtake.openBlocker();
+                    outtake.setState(constantsRobot.outtake.READY);
+                    slides.preset(constantsRobot.slides.READY);
+                })
+                .waitSeconds(3)
                 .build();
 
         TrajectorySequence PARK_LEFT = drive.trajectorySequenceBuilder(TO_BACKBOARD.end())
                 .lineToConstantHeading(new Vector2d(48, 12))
-                .lineToConstantHeading(new Vector2d(60, 60))
+                .lineToConstantHeading(new Vector2d(60, 12))
+                .addTemporalMarker(0, () -> {
+                    outtake.setState(constantsRobot.outtake.READY);
+                    slides.preset(constantsRobot.slides.READY);
+                })
                 .build();
 
         TrajectorySequence PARK_RIGHT = drive.trajectorySequenceBuilder(TO_BACKBOARD.end())
@@ -166,24 +312,34 @@ public class blue_front extends LinearOpMode {
                 case TO_STACK:
                     if (!drive.isBusy()) {
                         drive.followTrajectorySequence(TO_STACK);
-                        nextTraj(redBack.TO_BACKBOARD);
+                        nextTraj(redBack.BURST);
                     }
                     break;
+                case BURST:
+                    if (!drive.isBusy()) {
+                        drive.followTrajectorySequence(BURST);
+                        nextTraj(redBack.TO_BACKBOARD);
+                    }
                 case TO_BACKBOARD:
                     if (!drive.isBusy()) {
                         drive.followTrajectorySequence(TO_BACKBOARD);
                         cycles++;
-                        nextTraj(redBack.PARK_LEFT);
+                        nextTraj(redBack.RESET);
                     }
                     break;
+                case RESET:
+                    if (!drive.isBusy()) {
+                        drive.followTrajectorySequence(RESET);
+                        nextTraj(redBack.END);
+                    }
                 case PARK_LEFT:
-                    if (!drive.isBusy() && cycles == 2) {
+                    if (!drive.isBusy()) {
                         drive.followTrajectorySequence(PARK_LEFT);
                         nextTraj(redBack.END);
                     }
                     break;
                 case PARK_RIGHT:
-                    if (!drive.isBusy() && cycles == 2) {
+                    if (!drive.isBusy()) {
                         drive.followTrajectorySequence(PARK_RIGHT);
                         nextTraj(redBack.END);
                     }

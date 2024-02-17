@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.subs.intake;
+import org.firstinspires.ftc.teamcode.subsystems.intake;
 import org.firstinspires.ftc.teamcode.subsystems.outtake;
 import org.firstinspires.ftc.teamcode.subsystems.slides;
 import org.firstinspires.ftc.teamcode.subsystems.shooter;
@@ -72,13 +72,13 @@ public class turkey extends LinearOpMode{
             );
 
             if (gamepad1.right_trigger < 0.3 | gamepad1.left_trigger < 0.3) {
-                    intake.state(constants.intakeState.STOP);
+                    intake.setIntake(constantsRobot.intake.OFF);
             }
             if (gamepad1.right_trigger >= 0.3) {
-                    intake.state(constants.intakeState.SUCK);
+                    intake.setIntake(constantsRobot.intake.SUCK);
             }
             if (gamepad1.left_trigger >= 0.3) {
-                    intake.state(constants.intakeState.SPIT);
+                    intake.setIntake(constantsRobot.intake.SPIT);
             }
 
             if (gamepad2.cross) {
@@ -95,26 +95,26 @@ public class turkey extends LinearOpMode{
             }
 
             if (gamepad2.dpad_down) {
-                slides.preset(constants.slides.READY);
+                slides.preset(constantsRobot.slides.READY);
             }
 
             if (gamepad2.dpad_left) {
-                slides.preset(constants.slides.FIRST);
+                slides.preset(constantsRobot.slides.FIRST);
             }
             if (gamepad2.dpad_right) {
-                slides.preset(constants.slides.SECOND);
+                slides.preset(constantsRobot.slides.SECOND);
             }
 
             if (gamepad2.dpad_up) {
-                slides.preset(constants.slides.THIRD);
+                slides.preset(constantsRobot.slides.THIRD);
             }
 
             if (gamepad2.right_bumper) {
-                slides.preset(constants.slides.FULL);
+                outtake.openBlocker();
             }
 
             if (gamepad2.left_bumper) {
-                slides.preset(constants.slides.HANG);
+                outtake.closeBlocker();
             }
 
             if (gamepad2.right_trigger > 0.3){
@@ -126,13 +126,13 @@ public class turkey extends LinearOpMode{
             }
 
             if (gamepad2.right_stick_y > 0.2) {
-                slides.preset(constants.slides.CUSTOM);
+                slides.preset(constantsRobot.slides.CUSTOM);
                 slides.setHeight(slides.getCurrentHeight() + 1); // Switch value to something during testing
                 telemetry.addData("Custom Slide Height: ", slides.getCurrentHeight());
             }
 
             if (gamepad2.right_stick_y < -0.2) {
-                slides.preset(constants.slides.CUSTOM);
+                slides.preset(constantsRobot.slides.CUSTOM);
                 slides.setHeight(slides.getCurrentHeight() - 1); // Switch value to something during testing
                 telemetry.addData("Custom Slide Height: ", slides.getCurrentHeight());
             }

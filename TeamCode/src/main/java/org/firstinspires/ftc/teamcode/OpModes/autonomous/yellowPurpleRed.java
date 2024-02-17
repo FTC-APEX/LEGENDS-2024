@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.subsystems.outtake;
 import org.firstinspires.ftc.teamcode.subsystems.slides;
 import org.firstinspires.ftc.teamcode.util.constantsAutonomous.redBack;
 import org.firstinspires.ftc.teamcode.util.constantsRobot;
-import org.firstinspires.ftc.teamcode.utility.OpenCV;
+import org.firstinspires.ftc.teamcode.util.OpenCV;
 
 @Autonomous (name = "Red Auto w/ Cam (Yellow Purple Only)")
 public class yellowPurpleRed extends LinearOpMode {
@@ -31,7 +31,7 @@ public class yellowPurpleRed extends LinearOpMode {
     SampleMecanumDrive drive;
     kamera kamera = new kamera();
 
-    Pose2d startPos = new Pose2d(-36, -60, Math.toRadians(90));
+    Pose2d startPos = new Pose2d(-39.625, -63.3125, Math.toRadians(90));
     OpenCV.Pipeline.position zone = OpenCV.Pipeline.position.UNKNOWN;
     int cycles = 0;
     boolean purple = false;
@@ -67,7 +67,7 @@ public class yellowPurpleRed extends LinearOpMode {
 
             SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
                     .setReversed(true)
-                    .splineTo(new Vector2d(-24, -36), Math.toRadians(0))
+                    .splineTo(new Vector2d(-30, -36), Math.toRadians(0))
                     .lineToConstantHeading((new Vector2d(0, -36)))
                     .splineTo(new Vector2d(48, -30), Math.toRadians(0))
                     .setReversed(false)
@@ -75,15 +75,15 @@ public class yellowPurpleRed extends LinearOpMode {
         }
         else if(zone == OpenCV.Pipeline.position.CENTER) {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-                    .lineToConstantHeading(new Vector2d(-36, -34))
+                    .lineToConstantHeading(new Vector2d(-36, -32))
                     .addTemporalMarker(2, () ->
                             intake.setIntake(constantsRobot.intake.SPIT))
                     .build();
 
             SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
                     .setReversed(true)
-                    .splineTo(new Vector2d(-24, -36), Math.toRadians(0))
-                    .lineTo((new Vector2d(0, -36)))
+                    .splineTo(new Vector2d(-36, -36), Math.toRadians(0))
+                    .lineToConstantHeading((new Vector2d(0, -36)))
                     .splineTo(new Vector2d(48, -36), Math.toRadians(0))
                     .setReversed(false)
                     .build();
@@ -106,16 +106,16 @@ public class yellowPurpleRed extends LinearOpMode {
         }
         else { //lucky 2
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-                    .lineToConstantHeading(new Vector2d(-36, -34))
+                    .lineToConstantHeading(new Vector2d(-36, -32))
                     .addTemporalMarker(2, () ->
                             intake.setIntake(constantsRobot.intake.SPIT))
                     .build();
 
             SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
                     .setReversed(true)
-                    .splineTo(new Vector2d(-24, -36), Math.toRadians(0))
+                    .splineTo(new Vector2d(-36, -36), Math.toRadians(-90))
                     .lineToConstantHeading((new Vector2d(0, -36)))
-                    .splineTo(new Vector2d(48, -36), Math.toRadians(0))
+                    .splineTo(new Vector2d(48, -36), Math.toRadians(-90))
                     .setReversed(false)
                     .build();
         }
