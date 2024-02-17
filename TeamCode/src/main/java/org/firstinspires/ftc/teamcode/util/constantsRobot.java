@@ -70,8 +70,8 @@ public class constantsRobot {
     public static double BLOCKER_OPEN = 0.5;
     public static double BLOCKER_CLOSED = 0.9;
 
-    public static double PIVOT_A_READY = 0.50;
-    public static double PIVOT_B_READY = 0.50;
+    public static double PIVOT_A_READY = 0.52;
+    public static double PIVOT_B_READY = 0.48;
 
     public static double PIVOT_A_SCORE = 0;
     public static double PIVOT_B_SCORE = 1;

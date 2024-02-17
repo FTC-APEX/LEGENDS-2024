@@ -12,12 +12,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.roadrunner.util.PoseStorage;
-import org.firstinspires.ftc.teamcode.subs.kamera;
+import org.firstinspires.ftc.teamcode.subsystems.kameraBLUE;
 import org.firstinspires.ftc.teamcode.subsystems.intake;
 import org.firstinspires.ftc.teamcode.subsystems.outtake;
 import org.firstinspires.ftc.teamcode.subsystems.slides;
+import org.firstinspires.ftc.teamcode.util.OpenCVBLUE;
 import org.firstinspires.ftc.teamcode.util.constantsAutonomous.redBack;
-import org.firstinspires.ftc.teamcode.util.OpenCV;
 import org.firstinspires.ftc.teamcode.util.constantsRobot;
 
 @Autonomous (name = "Blue Front Auto w/ Cam")
@@ -28,10 +28,10 @@ public class blue_front extends LinearOpMode {
     outtake outtake = new outtake();
     slides slides = new slides();
     SampleMecanumDrive drive;
-    kamera kamera = new kamera();
+    kameraBLUE kamera = new kameraBLUE();
 
-    Pose2d startPos = new Pose2d(15.625, 63.3125, Math.toRadians(90));
-    OpenCV.Pipeline.position zone = OpenCV.Pipeline.position.UNKNOWN;
+    Pose2d startPos = new Pose2d(15.625, 62.5, Math.toRadians(270));
+    OpenCVBLUE.Pipeline.position zone = OpenCVBLUE.Pipeline.position.UNKNOWN;
     int cycles = 0;
     boolean purple = false;
     boolean yellow = true;
@@ -65,17 +65,14 @@ public class blue_front extends LinearOpMode {
         TrajectorySequence PURPLE_CAM;
         TrajectorySequence SCORE_YELLOW;
 
-        if (zone == OpenCV.Pipeline.position.LEFT) {
+        if (zone == OpenCVBLUE.Pipeline.position.LEFT) {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-//                    .lineToConstantHeading(new Vector2d(15.625, -33)) // y = -33 for jizz code
-//                    .turn(Math.toRadians(90))
-//                    .lineToConstantHeading(new Vector2d(14, -33))
-                    .lineToConstantHeading(new Vector2d(15.625, 48))
-                    .splineTo(new Vector2d(13.5, 30), Math.toRadians(180))
+                    .lineToLinearHeading(new Pose2d(40, 28, Math.toRadians(180)))
+                    .lineTo(new Vector2d(37, 28))
                     .addTemporalMarker(2.5, () -> {
                         intake.setIntake(constantsRobot.intake.SPIT);
                     })
-                    .addTemporalMarker(2.515, () -> {
+                    .addTemporalMarker(2.545, () -> {
                         intake.setIntake(constantsRobot.intake.OFF);
                     })
                     .waitSeconds(1)
@@ -85,7 +82,7 @@ public class blue_front extends LinearOpMode {
                     .setReversed(true)
 //                    .lineToConstantHeading(new Vector2d(24, -33))
 //                    .splineTo(new Vector2d(53, -27), Math.toRadians(0))
-                    .lineToConstantHeading(new Vector2d(56.5, 27))
+                    .lineToConstantHeading(new Vector2d(56.5, 39))
                     .setReversed(false)
                     .addTemporalMarker(1, () -> {
                         intake.setIntake(constantsRobot.intake.OFF);
@@ -102,7 +99,7 @@ public class blue_front extends LinearOpMode {
                     .waitSeconds(1)
                     .build();
         }
-        else if(zone == OpenCV.Pipeline.position.CENTER) {
+        else if(zone == OpenCVBLUE.Pipeline.position.CENTER) {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
 //                    .lineToConstantHeading(new Vector2d(12, -36))
                     .lineToConstantHeading(new Vector2d(8, 36))
@@ -126,23 +123,23 @@ public class blue_front extends LinearOpMode {
                     .addDisplacementMarker(0.5, () -> {
                         slides.preset(constantsRobot.slides.FIRST);
                     })
-                    .addDisplacementMarker(6, () -> {
+                    .addTemporalMarker(1.5, ()-> {
                         outtake.setState(constantsRobot.outtake.AIM);
                     })
-                    .addTemporalMarker(3.5, ()-> {
+                    .addTemporalMarker(2.25, ()-> {
                         outtake.openBlocker();
                     })
                     .waitSeconds(2)
                     .build();
         }
-        else if (zone == OpenCV.Pipeline.position.RIGHT) {
+        else if (zone == OpenCVBLUE.Pipeline.position.RIGHT) {
             PURPLE_CAM = drive.trajectorySequenceBuilder(startPos)
-                    .lineToLinearHeading(new Pose2d(40, 28, Math.toRadians(180)))
-                    .lineTo(new Vector2d(37, 28))
+                    .lineToLinearHeading(new Pose2d(15.625, 28, Math.toRadians(180)))
+                    .lineToConstantHeading(new Vector2d(13, 28))
                     .addTemporalMarker(2.5, () -> {
                         intake.setIntake(constantsRobot.intake.SPIT);
                     })
-                    .addTemporalMarker(2.52, () -> {
+                    .addTemporalMarker(2.545, () -> {
                         intake.setIntake(constantsRobot.intake.OFF);
                     })
                     .waitSeconds(1)
@@ -150,7 +147,7 @@ public class blue_front extends LinearOpMode {
 
             SCORE_YELLOW = drive.trajectorySequenceBuilder(PURPLE_CAM.end())
                     .setReversed(true)
-                    .splineTo(new Vector2d(56.5, 39), Math.toRadians(0))
+                    .lineToLinearHeading(new Pose2d(56.5, 27, Math.toRadians(180)))
                     .setReversed(false)
                     .addTemporalMarker(0, () -> {
                         intake.setIntake(constantsRobot.intake.OFF);
@@ -158,10 +155,10 @@ public class blue_front extends LinearOpMode {
                     .addDisplacementMarker(0.5, () -> {
                         slides.preset(constantsRobot.slides.FIRST);
                     })
-                    .addTemporalMarker(1, () -> {
+                    .addTemporalMarker(1.5, () -> {
                         outtake.setState(constantsRobot.outtake.AIM);
                     })
-                    .addTemporalMarker(2.75, ()-> {
+                    .addTemporalMarker(2.25, ()-> {
                         outtake.openBlocker();
                     })
                     .waitSeconds(2)
@@ -193,8 +190,8 @@ public class blue_front extends LinearOpMode {
 
 
         TrajectorySequence TO_STACK = drive.trajectorySequenceBuilder(SCORE_YELLOW.end())
-                .splineTo(new Vector2d(18, 10), Math.toRadians(180))
-                .splineTo(new Vector2d(-55, 16), Math.toRadians(180)) // add -48 to the x value (currently at 5 tile length for testing
+                .splineTo(new Vector2d(18, 14), Math.toRadians(180))
+                .splineTo(new Vector2d(-55, 14), Math.toRadians(180)) // add -48 to the x value (currently at 5 tile length for testing
                 .addDisplacementMarker(0.5, () -> {
                     outtake.setState(constantsRobot.outtake.READY);
                     outtake.openBlocker();
@@ -205,11 +202,11 @@ public class blue_front extends LinearOpMode {
 
         TrajectorySequence BURST = drive.trajectorySequenceBuilder(TO_STACK.end())
                 .waitSeconds(1.5)
-                .lineToConstantHeading(new Vector2d(-50, 12))// add -24 to the x value (currently at 5 tile length for testing
-                .lineToConstantHeading(new Vector2d(-56, 12))// add -24 to the x value (currently at 5 tile length for testing
+                .lineToConstantHeading(new Vector2d(-50, 12))// add -24 to the x value (currently at 6 tile length for testing
+                .lineToConstantHeading(new Vector2d(-56, 12))// add -24 to the x value (currently at 6 tile length for testing
                 .waitSeconds(1)
-                .lineToConstantHeading(new Vector2d(-50, 12))// add -24 to the x value (currently at 5 tile length for testing
-                .lineToConstantHeading(new Vector2d(-56, 12))// add -24 to the x value (currently at 5 tile length for testing
+                .lineToConstantHeading(new Vector2d(-50, 12))// add -24 to the x value (currently at 6 tile length for testing
+                .lineToConstantHeading(new Vector2d(-56, 12))// add -24 to the x value (currently at 6 tile length for testing
                 .waitSeconds(1)
                 .addTemporalMarker(0.5, () -> {
                     intake.setIntake(constantsRobot.intake.CONTROLLED);

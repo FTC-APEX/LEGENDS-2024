@@ -12,7 +12,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-public class OpenCV {
+public class OpenCVBLUE {
 
     public static class Pipeline extends OpenCvPipeline {
 
@@ -31,14 +31,14 @@ public class OpenCV {
 
         //Regions for detection
         //Region Anchors
-        static final Point anchorLeft = new Point(0, 300);
-        static final Point anchorCenter = new Point(175, 300);
-        static final Point anchorRight = new Point(900, 300);
+        static final Point anchorLeft = new Point(200, 300);
+        static final Point anchorCenter = new Point(375, 300);
+        static final Point anchorRight = new Point(1100, 300);
         static final int widthL = 175;
         static final int heightL = 300;
         static final int widthC = 725;
         static final int heightC = 200;
-        static final int widthR = 360;
+        static final int widthR = 180;
         static final int heightR = 300;
 
         //Left Region Points
@@ -142,10 +142,14 @@ public class OpenCV {
             int maxLRR = Math.max(avgLR, avgRR);
             int minR = Math.max(maxLRR, avgCR);
 
-            int maxLRB = Math.max(avgLR, avgRR);
-            int minB = Math.max(maxLRB, avgCR);
+            int maxLRB = Math.max(avgLB, avgRB);
+            int minB = Math.max(maxLRB, avgCB);
 
-            if (minR == avgLR || minB == avgLB) {
+            if (Math.abs((avgRB-avgLB)) < 3 && Math.abs((avgCB-avgLB)) < 3 && Math.abs((avgCB-avgRB)) < 3) {
+                Position = position.RIGHT;
+            }
+
+            else if (minB == avgLB) {
                 Position = position.LEFT;
 
                 Imgproc.rectangle(
@@ -156,7 +160,7 @@ public class OpenCV {
                         2);
             }
 
-            else if(minR == avgCR || minB == avgCB) {
+            else if(minB == avgCB) {
                 Position = position.CENTER;
 
                 Imgproc.rectangle(
@@ -167,7 +171,7 @@ public class OpenCV {
                         2);
             }
 
-            else if(minR == avgRR || minB == avgRB) {
+            else if(minB == avgRB) {
                 Position = position.RIGHT;
 
                 Imgproc.rectangle(
@@ -176,10 +180,6 @@ public class OpenCV {
                         rightB,
                         ORANGE,
                         2);
-            }
-
-            else {
-                Position = position.RIGHT;
             }
 
             return frame;
